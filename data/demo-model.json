@@ -1,0 +1,150 @@
+{
+  "$comment": [
+    "The deck for the site's shared synthetic Eclipse model. This file holds only what a human",
+    "chose: dimensions, well locations and trajectories, controls, events, and the trend",
+    "parameters the property distributions are drawn from. Every bulky numeric array is",
+    "generated deterministically from the seed below by wwwroot/js/demos/model.js.",
+    "See docs/DEMO-MODEL.md for the data sheet and docs/ADR-002-interactive-demos.md for why.",
+    "This model is entirely synthetic. It is not derived from any customer dataset."
+  ],
+
+  "seed": 20190101,
+  "caseName": "SYNTH_2019",
+  "simulator": "Eclipse",
+  "unitSystem": "Metric",
+
+  "grid": {
+    "ni": 31,
+    "nj": 21,
+    "nk": 10,
+    "dx": 75.0,
+    "dy": 75.0,
+    "dzByLayer": [6.0, 8.0, 9.0, 11.0, 12.0, 10.0, 9.0, 8.0, 7.0, 6.0],
+    "topDepth": 2600.0,
+
+    "$comment": "Inactive cells: small clusters at the periphery of the top layer only.",
+    "inactiveTopLayerClusters": [
+      { "i0": 1,  "i1": 4,  "j0": 1,  "j1": 3  },
+      { "i0": 28, "i1": 31, "j0": 1,  "j1": 2  },
+      { "i0": 1,  "i1": 2,  "j0": 19, "j1": 21 },
+      { "i0": 27, "i1": 31, "j0": 20, "j1": 21 },
+      { "i0": 15, "i1": 17, "j0": 1,  "j1": 1  }
+    ]
+  },
+
+  "layerTrends": {
+    "$comment": "Per-layer means. PERMX is drawn lognormally about permMean; PERMZ = 0.1 x PERMX.",
+    "poro":     [0.14, 0.18, 0.22, 0.26, 0.28, 0.24, 0.20, 0.17, 0.15, 0.12],
+    "permMean": [12.0, 45.0, 120.0, 380.0, 800.0, 300.0, 90.0, 40.0, 18.0, 6.0],
+    "permSigma": 0.55,
+    "ntg":      [0.72, 0.85, 0.92, 0.95, 0.96, 0.90, 0.86, 0.80, 0.75, 0.68]
+  },
+
+  "fluids": {
+    "$comment": "Metric. Pressures barsa, Bo/Bw rm3/sm3, Rs sm3/sm3, viscosity cP, ct 1/bar.",
+    "initialPressure": 275.0,
+    "bubblePointPressure": 250.0,
+    "oilWaterContact": 2750.0,
+    "bo": 1.25,
+    "bw": 1.02,
+    "rs": 110.0,
+    "viscosityOil": 0.8,
+    "viscosityWater": 0.4,
+    "totalCompressibility": 1.5e-4,
+    "connateWaterSaturation": 0.25,
+    "maximumWaterCut": 0.96,
+
+    "$comment2": [
+      "A simple steady-state aquifer: influx rate = aquiferStrength x (initial - current)",
+      "pressure. Without it the tank depletes far faster than any real field, because a fixed",
+      "BHP with rising water cut roughly doubles liquid offtake over field life.",
+      "Injection is deliberately set to a voidage replacement ratio of roughly 0.6, with the",
+      "aquifer making up the balance. A VRR near 1.0 holds pressure almost flat, which is good",
+      "field management but leaves FPR a horizontal line and the producing gas/oil ratio pinned",
+      "at Rs — two of the more instructive curves reduced to nothing."
+    ],
+    "aquiferStrength": 45.0
+  },
+
+  "time": {
+    "start": "2019-01-01",
+    "summaryMonths": 192,
+    "solutionSteps": 16
+  },
+
+  "$comment2": [
+    "Wells. i/j are 1-based Eclipse indices. 'deviation' gives the cumulative [di, dj] offset",
+    "at each of the 10 layers; a straight vertical well omits it. Completions are derived as",
+    "every active cell the track passes through, so a track crossing an inactive top-layer",
+    "cluster simply has no perforation in layer 1."
+  ],
+  "$comment3": [
+    "i/j deliberately NOT on two dead-even rows: a perfectly uniform well pattern read as an",
+    "obvious pilot/test grid rather than a real field layout. Nudged by a cell or two each,",
+    "keeping the same rough two-line drive pattern (producers upper, injectors lower) real field",
+    "layouts often share, and kept clear of the inactive top-layer clusters below (their j-range",
+    "is 1-3/19-21; every well here sits well outside that)."
+  ],
+  "wells": [
+    { "name": "Prod_1", "type": "Producer", "i": 4,  "j": 6,  "bhpTarget": 150.0 },
+    { "name": "Prod_2", "type": "Producer", "i": 10, "j": 8,  "bhpTarget": 150.0,
+      "deviation": [[0,0],[0,0],[1,0],[1,1],[2,1],[2,2],[3,2],[3,3],[4,3],[4,4]] },
+    { "name": "Prod_3", "type": "Producer", "i": 13, "j": 5,  "bhpTarget": 150.0 },
+    { "name": "Prod_4", "type": "Producer", "i": 20, "j": 8,  "bhpTarget": 155.0 },
+    { "name": "Prod_5", "type": "Producer", "i": 23, "j": 6,  "bhpTarget": 150.0,
+      "deviation": [[0,0],[0,0],[0,1],[-1,1],[-1,2],[-2,2],[-2,3],[-3,3],[-3,4],[-4,4]] },
+    { "name": "Prod_6", "type": "Producer", "i": 30, "j": 7,  "bhpTarget": 160.0 },
+
+    { "name": "Inj_1",  "type": "Injector", "i": 3,  "j": 14, "rateTarget": 520.0 },
+    { "name": "Inj_2",  "type": "Injector", "i": 6,  "j": 17, "rateTarget": 600.0,
+      "deviation": [[0,0],[1,0],[1,0],[2,1],[2,1],[3,1],[3,2],[4,2],[4,2],[5,3]] },
+    { "name": "Inj_3",  "type": "Injector", "i": 13, "j": 14, "rateTarget": 570.0 },
+    { "name": "Inj_4",  "type": "Injector", "i": 16, "j": 16, "rateTarget": 550.0 },
+    { "name": "Inj_5",  "type": "Injector", "i": 23, "j": 13, "rateTarget": 600.0,
+      "deviation": [[0,0],[0,0],[-1,0],[-1,-1],[-2,-1],[-2,-2],[-3,-2],[-3,-3],[-4,-3],[-4,-4]] },
+    { "name": "Inj_6",  "type": "Injector", "i": 26, "j": 15, "rateTarget": 500.0 }
+  ],
+
+  "performance": {
+    "$comment": [
+      "targetInitialOilRate calibrates the productivity indices: the per-well J values are",
+      "derived from kh over each well's completions, then scaled together so the field opens at",
+      "this rate. Everything after that is consequence, not tuning."
+    ],
+    "targetInitialOilRate": 4500.0,
+    "breakthroughReferenceMonths": 54,
+    "waterCutSteepness": 0.055
+  },
+
+  "events": {
+    "$comment": [
+      "Shut-ins are NOT dated here. Prod_3 and Prod_5 carry an economic water-cut limit, as",
+      "WECON would apply it per well, and each shuts on the first month its own water cut",
+      "reaches the limit. The date is therefore a result of the model, so the cause of the",
+      "shut-in is genuinely visible on the same plot rather than arranged to look that way.",
+      "rampMonths applies to every injector at startup."
+    ],
+    "rampMonths": 3,
+    "economicLimit": {
+      "waterCutLimit": 0.90,
+      "wells": ["Prod_3", "Prod_5"]
+    },
+    "workovers": [
+      { "well": "Inj_4", "from": "2021-04-01", "months": 4 }
+    ],
+    "injectionUplift": { "date": "2022-01-01", "factor": 1.15 }
+  },
+
+  "observed": {
+    "$comment": [
+      "Observed (history) vectors are the simulated series plus bias and coarser noise, and are",
+      "deliberately sparse and partly stale — a proportion of months are missing and a",
+      "proportion repeat the previous reading. Without that, 'Show Observed Data' and 'Hide",
+      "Repeated Observed Data' would demonstrate nothing."
+    ],
+    "bias": 0.97,
+    "noise": 0.06,
+    "missingFraction": 0.25,
+    "repeatedFraction": 0.15
+  }
+}

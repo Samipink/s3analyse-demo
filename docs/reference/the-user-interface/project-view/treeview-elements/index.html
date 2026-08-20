@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="/s3analyse-demo/">
+    <link rel="icon" href="img/favicon.png">
+    <link rel="stylesheet" href="css/site.css">
+    <title>Treeview Elements — S3analyse</title><meta name="description" content="One of the main features of S3analyse is the user friendly way in which data is presented to the user." />
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+        }
+    }
+    </script>
+    <script>
+        (function () {
+            try {
+                var saved = localStorage.getItem('theme');
+                if (saved === 'dark' || saved === 'light') {
+                    document.documentElement.setAttribute('data-theme', saved);
+                }
+            } catch (e) { /* private browsing — fall back to the OS preference */ }
+        })();
+    </script></head>
+
+<body><a class="skip-link" href="#main-content">Skip to content</a>
+
+<input type="checkbox" id="nav-toggle" class="nav-toggle-input" aria-hidden="true" tabindex="-1">
+
+<header class="topbar"><label for="nav-toggle" class="nav-toggle-button" title="Toggle navigation" aria-label="Toggle navigation"><span aria-hidden="true">&#9776;</span></label>
+
+    <a class="brand" href="/s3analyse-demo/"><img src="img/s3analyse-logo.png" alt width="28" height="28">
+        <span class="brand-name">S3analyse</span></a>
+
+    <nav class="breadcrumb" aria-label="Breadcrumb"><ol><li><a href="/s3analyse-demo/">Home</a></li><li><a href="/s3analyse-demo/docs/reference">Reference</a></li><li><a href="/s3analyse-demo/docs/reference/the-user-interface">The User Interface</a></li><li><a href="/s3analyse-demo/docs/reference/the-user-interface/project-view">Project View</a></li><li><span aria-current="page">Treeview Elements</span></li></ol></nav>
+
+    <div class="topbar-actions"><form class="searchbox" action="/s3analyse-demo/search" method="get" role="search"><label class="sr-only" for="site-search">Search the site</label>
+    <input id="site-search" class="searchbox-input" type="search" name="q" placeholder="Search&#x2026;" autocomplete="off" spellcheck="false" />
+    <button class="searchbox-button" type="submit" aria-label="Search"><svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5"></circle>
+            <path d="M12.6 12.6 17 17"></path></svg></button></form>
+
+        <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" title="Switch theme" aria-label="Switch between light and dark theme"><svg class="theme-icon theme-icon-dark" viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16.6 12.4A7.2 7.2 0 0 1 7.6 3.4a7.2 7.2 0 1 0 9 9z"></path></svg>
+            <svg class="theme-icon theme-icon-light" viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="10" r="3.6"></circle>
+                <path d="M10 1.4v2.2M10 16.4v2.2M1.4 10h2.2M16.4 10h2.2
+                         M3.9 3.9l1.6 1.6M14.5 14.5l1.6 1.6M16.1 3.9l-1.6 1.6M5.5 14.5l-1.6 1.6"></path></svg></button></div></header>
+
+<div class="shell"><aside id="sidebar" class="sidebar"><nav class="sidenav" aria-label="Site sections"><a class="nav-link " href="/s3analyse-demo/">Home</a><a class="nav-link " href="/s3analyse-demo/docs/data">Loading simulation data</a><a class="nav-link " href="/s3analyse-demo/docs/visualisation">Grid visualisation</a><a class="nav-link " href="/s3analyse-demo/docs/plotting">Plotting and dashboards</a><a class="nav-link " href="/s3analyse-demo/docs/analysis">Analysis and economics</a><a class="nav-link " href="/s3analyse-demo/docs/export">Export and reporting</a><details class="nav-group"><summary class="nav-group-title">Python scripting</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/scripting">Overview</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/scripting/workflows">Workflows</a></li></ul></details><details class="nav-group" open><summary class="nav-group-title">Reference</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference">Overview</a></li><li><details class="nav-group"><summary class="nav-group-title">Welcome to S3analyse</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/welcome-to-s3analyse">Overview</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/welcome-to-s3analyse/summary-of-capabilities">Summary of Capabilities</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/welcome-to-s3analyse/system-requirements">System Requirements</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/welcome-to-s3analyse/getting-help">Getting Help</a></li></ul></details></li><li><details class="nav-group"><summary class="nav-group-title">General Settings</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/general-settings">Overview</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/general-settings/general-settings">General Settings</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/general-settings/hpg">HPG</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/general-settings/grid">Grid</a></li><li><details class="nav-group"><summary class="nav-group-title">Graph</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/general-settings/graph">Overview</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/general-settings/graph/colour-schemes">Colour Schemes</a></li></ul></details></li><li><details class="nav-group"><summary class="nav-group-title">Simulators</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/general-settings/simulators">Overview</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/general-settings/simulators/eclipse">Eclipse</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/general-settings/simulators/nexus">Nexus</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/general-settings/simulators/meteor">Meteor</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/general-settings/simulators/cmg">CMG</a></li></ul></details></li></ul></details></li><li><details class="nav-group" open><summary class="nav-group-title">The User Interface</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/the-user-interface">Overview</a></li><li><details class="nav-group"><summary class="nav-group-title">Ribbon Menu</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/the-user-interface/ribbon-menu">Overview</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/the-user-interface/ribbon-menu/quick-access-toolbar">Quick Access Toolbar</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/the-user-interface/ribbon-menu/file-tab">File Tab</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/the-user-interface/ribbon-menu/home-tab">Home Tab</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/the-user-interface/ribbon-menu/view-tab">View Tab</a></li><li><details class="nav-group"><summary class="nav-group-title">Contextual Tabs</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/the-user-interface/ribbon-menu/contextual-tabs">Overview</a></li><li><details class="nav-group"><summary class="nav-group-title">Grid Tools</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/the-user-interface/ribbon-menu/contextual-tabs/grid-tools">Overview</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/the-user-interface/ribbon-menu/contextual-tabs/grid-tools/grid-view-tab">Grid View Tab</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/the-user-interface/ribbon-menu/contextual-tabs/grid-tools/grid-data-tab">Grid Data Tab</a></li></ul></details></li><li><details class="nav-group"><summary class="nav-group-title">Chart Tools</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/the-user-interface/ribbon-menu/contextual-tabs/chart-tools">Overview</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/the-user-interface/ribbon-menu/contextual-tabs/chart-tools/chart-view-tab">Chart View Tab</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/the-user-interface/ribbon-menu/contextual-tabs/chart-tools/chart-data-tab">Chart Data Tab</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/the-user-interface/ribbon-menu/contextual-tabs/chart-tools/histogram-tab">Histogram Tab</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/the-user-interface/ribbon-menu/contextual-tabs/chart-tools/line-analysis-tab">Line Analysis Tab</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/the-user-interface/ribbon-menu/contextual-tabs/chart-tools/scatter-plot-tab">Scatter Plot Tab</a></li></ul></details></li><li><details class="nav-group"><summary class="nav-group-title">Multi-Plot Tools</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/the-user-interface/ribbon-menu/contextual-tabs/multi-plot-tools">Overview</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/the-user-interface/ribbon-menu/contextual-tabs/multi-plot-tools/design-tab">Design Tab</a></li></ul></details></li><li><details class="nav-group"><summary class="nav-group-title">Dashboard Tools</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/the-user-interface/ribbon-menu/contextual-tabs/dashboard-tools">Overview</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/the-user-interface/ribbon-menu/contextual-tabs/dashboard-tools/design-tab">Design Tab</a></li></ul></details></li><li><details class="nav-group"><summary class="nav-group-title">NPV Tools</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/the-user-interface/ribbon-menu/contextual-tabs/npv-tools">Overview</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/the-user-interface/ribbon-menu/contextual-tabs/npv-tools/npv-settings-tab">NPV Settings Tab</a></li></ul></details></li></ul></details></li><li><details class="nav-group"><summary class="nav-group-title">Common Ribbon Controls</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/the-user-interface/ribbon-menu/common-ribbon-controls">Overview</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/the-user-interface/ribbon-menu/common-ribbon-controls/selected-property-ribbon-group">Selected Property Ribbon Group</a></li></ul></details></li></ul></details></li><li><details class="nav-group" open><summary class="nav-group-title">Project View</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/the-user-interface/project-view">Overview</a></li><li><a class="nav-link active" href="/s3analyse-demo/docs/reference/the-user-interface/project-view/treeview-elements" aria-current="page">Treeview Elements</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/the-user-interface/project-view/project-wide-filter">Project-Wide Filter</a></li></ul></details></li><li><details class="nav-group"><summary class="nav-group-title">Window View</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/the-user-interface/window-view">Overview</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/the-user-interface/window-view/broadcasting">Broadcasting</a></li></ul></details></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/the-user-interface/display-area">Display Area</a></li></ul></details></li><li><details class="nav-group"><summary class="nav-group-title">Loading Data</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/loading-data">Overview</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/loading-data/opening-files">Opening Files</a></li><li><details class="nav-group"><summary class="nav-group-title">Projects</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/loading-data/projects">Overview</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/loading-data/projects/multi-case-projects">Multi-Case Projects</a></li></ul></details></li><li><details class="nav-group"><summary class="nav-group-title">Supported Data Types</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/loading-data/supported-data-types">Overview</a></li><li><details class="nav-group"><summary class="nav-group-title">Eclipse</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/loading-data/supported-data-types/eclipse">Overview</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/loading-data/supported-data-types/eclipse/load-dialog">Load Dialog</a></li></ul></details></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/loading-data/supported-data-types/echelon">Echelon</a></li><li><details class="nav-group"><summary class="nav-group-title">Nexus/VIP</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/loading-data/supported-data-types/nexus-vip">Overview</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/loading-data/supported-data-types/nexus-vip/load-dialog">Load Dialog</a></li></ul></details></li><li><details class="nav-group"><summary class="nav-group-title">CMG</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/loading-data/supported-data-types/cmg">Overview</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/loading-data/supported-data-types/cmg/load-dialog">Load Dialog</a></li></ul></details></li><li><details class="nav-group"><summary class="nav-group-title">Meteor</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/loading-data/supported-data-types/meteor">Overview</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/loading-data/supported-data-types/meteor/load-dialog">Load Dialog</a></li></ul></details></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/loading-data/supported-data-types/utchem">UTCHEM</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/loading-data/supported-data-types/input-parameter-files">Input Parameter Files</a></li><li><details class="nav-group"><summary class="nav-group-title">Text Files</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/loading-data/supported-data-types/text-files">Overview</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/loading-data/supported-data-types/text-files/header-section">Header Section</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/loading-data/supported-data-types/text-files/data-table-section">Data Table Section</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/loading-data/supported-data-types/text-files/text-file-examples">Text File Examples</a></li></ul></details></li></ul></details></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/loading-data/hpg-files">HPG Files</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/loading-data/observed-data">Observed Data</a></li></ul></details></li><li><details class="nav-group"><summary class="nav-group-title">Managing Data</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/managing-data">Overview</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/managing-data/resampling">Resampling</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/managing-data/well-lists">Well Lists</a></li></ul></details></li><li><details class="nav-group"><summary class="nav-group-title">Chart Displays</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/chart-displays">Overview</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/chart-displays/creating-charts">Creating Charts</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/chart-displays/modifying-charts">Modifying Charts</a></li><li><details class="nav-group"><summary class="nav-group-title">Line Plots</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/chart-displays/line-plots">Overview</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/chart-displays/line-plots/indexing">Indexing</a></li><li><details class="nav-group"><summary class="nav-group-title">Adding and Removing Lines</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/chart-displays/line-plots/adding-and-removing-lines">Overview</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/chart-displays/line-plots/adding-and-removing-lines/shared-axis">Shared Axis</a></li></ul></details></li><li><details class="nav-group"><summary class="nav-group-title">Line Plot Settings</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/chart-displays/line-plots/line-plot-settings">Overview</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/chart-displays/line-plots/line-plot-settings/chart-settings">Chart Settings</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/chart-displays/line-plots/line-plot-settings/legend-settings">Legend Settings</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/chart-displays/line-plots/line-plot-settings/axes-settings">Axes Settings</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/chart-displays/line-plots/line-plot-settings/axis-settings">Axis Settings</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/chart-displays/line-plots/line-plot-settings/data-series">Data Series</a></li></ul></details></li></ul></details></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/chart-displays/multi-plot">Multi-Plot</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/chart-displays/rft-plots">RFT Plots</a></li><li><details class="nav-group"><summary class="nav-group-title">Histograms</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/chart-displays/histograms">Overview</a></li><li><details class="nav-group"><summary class="nav-group-title">Histogram Settings</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/chart-displays/histograms/histogram-settings">Overview</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/chart-displays/histograms/histogram-settings/chart-settings">Chart Settings</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/chart-displays/histograms/histogram-settings/shared-x-axes">Shared X-Axes</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/chart-displays/histograms/histogram-settings/y-axes">Y-Axes</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/chart-displays/histograms/histogram-settings/histogram-settings">Histogram Settings</a></li></ul></details></li></ul></details></li><li><details class="nav-group"><summary class="nav-group-title">Line Analysis</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/chart-displays/line-analysis">Overview</a></li><li><details class="nav-group"><summary class="nav-group-title">Line Analysis Settings</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/chart-displays/line-analysis/line-analysis-settings">Overview</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/chart-displays/line-analysis/line-analysis-settings/chart-settings">Chart Settings</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/chart-displays/line-analysis/line-analysis-settings/line-settings">Line Settings</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/chart-displays/line-analysis/line-analysis-settings/axes-settings">Axes Settings</a></li></ul></details></li></ul></details></li><li><details class="nav-group"><summary class="nav-group-title">Grid Scatter Plot</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/chart-displays/grid-scatter-plot">Overview</a></li><li><details class="nav-group"><summary class="nav-group-title">Grid Scatter Plot Settings</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/chart-displays/grid-scatter-plot/grid-scatter-plot-settings">Overview</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/chart-displays/grid-scatter-plot/grid-scatter-plot-settings/chart-settings">Chart Settings</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/chart-displays/grid-scatter-plot/grid-scatter-plot-settings/axes">Axes</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/chart-displays/grid-scatter-plot/grid-scatter-plot-settings/x-axis">X-Axis</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/chart-displays/grid-scatter-plot/grid-scatter-plot-settings/y-axis">Y-Axis</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/chart-displays/grid-scatter-plot/grid-scatter-plot-settings/data-series">Data Series</a></li></ul></details></li></ul></details></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/chart-displays/table-data-charts">Table Data Charts</a></li></ul></details></li><li><details class="nav-group"><summary class="nav-group-title">Grid Displays</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/grid-displays">Overview</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/grid-displays/creating-grids">Creating Grids</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/grid-displays/modifying-grids">Modifying Grids</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/grid-displays/grid-details">Grid Details</a></li><li><details class="nav-group"><summary class="nav-group-title">Grid Settings</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/grid-displays/grid-settings">Overview</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/grid-displays/grid-settings/axis-settings">Axis Settings</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/grid-displays/grid-settings/cell-lines">Cell Lines</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/grid-displays/grid-settings/centre-of-rotation">Centre Of Rotation</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/grid-displays/grid-settings/cut-planes">Cut Planes</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/grid-displays/grid-settings/grid-clipping">Grid Clipping</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/grid-displays/grid-settings/grid-settings">Grid Settings</a></li><li><details class="nav-group"><summary class="nav-group-title">Legend Settings</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/grid-displays/grid-settings/legend-settings">Overview</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/grid-displays/grid-settings/legend-settings/settings">Settings</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/grid-displays/grid-settings/legend-settings/labels-position">Labels &amp; Position</a></li></ul></details></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/grid-displays/grid-settings/scale-factor">Scale Factor</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/grid-displays/grid-settings/ternary-settings">Ternary Settings</a></li><li><details class="nav-group"><summary class="nav-group-title">Threshold Settings</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/grid-displays/grid-settings/threshold-settings">Overview</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/grid-displays/grid-settings/threshold-settings/threshold-example">Threshold Example</a></li></ul></details></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/grid-displays/grid-settings/threshold-regions">Threshold Regions</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/grid-displays/grid-settings/threshold-region-editor">Threshold Region Editor</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/grid-displays/grid-settings/tooltip-settings">Tooltip Settings</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/grid-displays/grid-settings/transparency-lighting">Transparency &amp; Lighting</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/grid-displays/grid-settings/view-mode">View Mode</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/grid-displays/grid-settings/viewing-angles">Viewing Angles</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/grid-displays/grid-settings/well-markers">Well Markers</a></li></ul></details></li><li><details class="nav-group"><summary class="nav-group-title">Grid Features</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/grid-displays/grid-features">Overview</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/grid-displays/grid-features/layer-analysis">Layer Analysis</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/grid-displays/grid-features/cut-planes">Cut Planes</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/grid-displays/grid-features/grid-clipping">Grid Clipping</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/grid-displays/grid-features/thresholds">Thresholds</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/grid-displays/grid-features/regions">Regions</a></li></ul></details></li></ul></details></li><li><details class="nav-group"><summary class="nav-group-title">Dashboards</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/dashboards">Overview</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/dashboards/dashboard-common-settings">Dashboard Common Settings</a></li><li><details class="nav-group"><summary class="nav-group-title">Filtering</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/dashboards/filtering">Overview</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/dashboards/filtering/dashboard-filter">Dashboard Filter</a></li></ul></details></li><li><details class="nav-group"><summary class="nav-group-title">Widgets</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/dashboards/widgets">Overview</a></li><li><details class="nav-group"><summary class="nav-group-title">Cross Plot</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/dashboards/widgets/cross-plot">Overview</a></li><li><details class="nav-group"><summary class="nav-group-title">Cross Plot Settings</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/dashboards/widgets/cross-plot/cross-plot-settings">Overview</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/dashboards/widgets/cross-plot/cross-plot-settings/cross-plot-settings">Cross Plot Settings</a></li><li><details class="nav-group"><summary class="nav-group-title">Axes Settings</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/dashboards/widgets/cross-plot/cross-plot-settings/axes-settings">Overview</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/dashboards/widgets/cross-plot/cross-plot-settings/axes-settings/x-axis-settings">X-Axis Settings</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/dashboards/widgets/cross-plot/cross-plot-settings/axes-settings/y-axis-settings">Y-Axis Settings</a></li></ul></details></li></ul></details></li></ul></details></li><li><details class="nav-group"><summary class="nav-group-title">Cumulative Distribution Plot</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/dashboards/widgets/cumulative-distribution-plot">Overview</a></li><li><details class="nav-group"><summary class="nav-group-title">Cumulative Distribution Plot Settings</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/dashboards/widgets/cumulative-distribution-plot/cumulative-distribution-plot-settings">Overview</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/dashboards/widgets/cumulative-distribution-plot/cumulative-distribution-plot-settings/cumulative-distribution-settings">Cumulative Distribution Settings</a></li><li><details class="nav-group"><summary class="nav-group-title">Axes Settings</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/dashboards/widgets/cumulative-distribution-plot/cumulative-distribution-plot-settings/axes-settings">Overview</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/dashboards/widgets/cumulative-distribution-plot/cumulative-distribution-plot-settings/axes-settings/x-axis-settings">X-Axis Settings</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/dashboards/widgets/cumulative-distribution-plot/cumulative-distribution-plot-settings/axes-settings/y-axis-settings">Y-Axis Settings</a></li></ul></details></li><li><details class="nav-group"><summary class="nav-group-title">Overlays Settings</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/dashboards/widgets/cumulative-distribution-plot/cumulative-distribution-plot-settings/overlays-settings">Overview</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/dashboards/widgets/cumulative-distribution-plot/cumulative-distribution-plot-settings/overlays-settings/p10-p50-and-p90-settings">P10, P50 and P90 Settings</a></li></ul></details></li></ul></details></li></ul></details></li><li><details class="nav-group"><summary class="nav-group-title">Ensemble Summary Plot</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/dashboards/widgets/ensemble-summary-plot">Overview</a></li><li><details class="nav-group"><summary class="nav-group-title">Ensemble Summary Plot Settings</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/dashboards/widgets/ensemble-summary-plot/ensemble-summary-plot-settings">Overview</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/dashboards/widgets/ensemble-summary-plot/ensemble-summary-plot-settings/ensemble-summary-settings">Ensemble Summary Settings</a></li><li><details class="nav-group"><summary class="nav-group-title">Axes Settings</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/dashboards/widgets/ensemble-summary-plot/ensemble-summary-plot-settings/axes-settings">Overview</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/dashboards/widgets/ensemble-summary-plot/ensemble-summary-plot-settings/axes-settings/x-axis-settings">X-Axis Settings</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/dashboards/widgets/ensemble-summary-plot/ensemble-summary-plot-settings/axes-settings/y-axis-settings">Y-Axis Settings</a></li></ul></details></li><li><details class="nav-group"><summary class="nav-group-title">Overlays Settings</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/dashboards/widgets/ensemble-summary-plot/ensemble-summary-plot-settings/overlays-settings">Overview</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/dashboards/widgets/ensemble-summary-plot/ensemble-summary-plot-settings/overlays-settings/individual-overlay-settings">Individual Overlay Settings</a></li></ul></details></li></ul></details></li></ul></details></li><li><details class="nav-group"><summary class="nav-group-title">Grid Property Plot</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/dashboards/widgets/grid-property-plot">Overview</a></li><li><details class="nav-group"><summary class="nav-group-title">Grid Property Plot Settings</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/dashboards/widgets/grid-property-plot/grid-property-plot-settings">Overview</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/dashboards/widgets/grid-property-plot/grid-property-plot-settings/grid-property-settings">Grid Property Settings</a></li><li><details class="nav-group"><summary class="nav-group-title">Axes Settings</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/dashboards/widgets/grid-property-plot/grid-property-plot-settings/axes-settings">Overview</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/dashboards/widgets/grid-property-plot/grid-property-plot-settings/axes-settings/x-axis-settings">X-Axis Settings</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/dashboards/widgets/grid-property-plot/grid-property-plot-settings/axes-settings/y-axis-settings">Y-Axis Settings</a></li></ul></details></li></ul></details></li></ul></details></li><li><details class="nav-group"><summary class="nav-group-title">Pearson Coefficient Plot</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/dashboards/widgets/pearson-coefficient-plot">Overview</a></li><li><details class="nav-group"><summary class="nav-group-title">Pearson Coefficient Plot Settings</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/dashboards/widgets/pearson-coefficient-plot/pearson-coefficient-plot-settings">Overview</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/dashboards/widgets/pearson-coefficient-plot/pearson-coefficient-plot-settings/pearson-coefficient-settings">Pearson Coefficient Settings</a></li><li><details class="nav-group"><summary class="nav-group-title">Axes Settings</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/dashboards/widgets/pearson-coefficient-plot/pearson-coefficient-plot-settings/axes-settings">Overview</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/dashboards/widgets/pearson-coefficient-plot/pearson-coefficient-plot-settings/axes-settings/x-axis-settings">X-Axis Settings</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/dashboards/widgets/pearson-coefficient-plot/pearson-coefficient-plot-settings/axes-settings/y-axis-settings">Y-Axis Settings</a></li></ul></details></li></ul></details></li></ul></details></li><li><details class="nav-group"><summary class="nav-group-title">Radar Plot</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/dashboards/widgets/radar-plot">Overview</a></li><li><details class="nav-group"><summary class="nav-group-title">Radar Plot Settings</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/dashboards/widgets/radar-plot/radar-plot-settings">Overview</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/dashboards/widgets/radar-plot/radar-plot-settings/radar-settings">Radar Settings</a></li><li><details class="nav-group"><summary class="nav-group-title">Axes</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/dashboards/widgets/radar-plot/radar-plot-settings/axes">Overview</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/dashboards/widgets/radar-plot/radar-plot-settings/axes/axis">?-Axis</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/dashboards/widgets/radar-plot/radar-plot-settings/axes/r-axis-settings">R-Axis Settings</a></li></ul></details></li></ul></details></li></ul></details></li><li><details class="nav-group"><summary class="nav-group-title">Well Statistics Plot</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/dashboards/widgets/well-statistics-plot">Overview</a></li><li><details class="nav-group"><summary class="nav-group-title">Well Statistics Plot Settings</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/dashboards/widgets/well-statistics-plot/well-statistics-plot-settings">Overview</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/dashboards/widgets/well-statistics-plot/well-statistics-plot-settings/well-statistics-settings">Well Statistics Settings</a></li><li><details class="nav-group"><summary class="nav-group-title">Axes Settings</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/dashboards/widgets/well-statistics-plot/well-statistics-plot-settings/axes-settings">Overview</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/dashboards/widgets/well-statistics-plot/well-statistics-plot-settings/axes-settings/x-axis-settings">X-Axis Settings</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/dashboards/widgets/well-statistics-plot/well-statistics-plot-settings/axes-settings/y-axis-settings">Y-Axis Settings</a></li></ul></details></li></ul></details></li></ul></details></li></ul></details></li></ul></details></li><li><details class="nav-group"><summary class="nav-group-title">Analysis Tools</summary>
+        <ul class="nav-list"><li><a class="nav-link " href="/s3analyse-demo/docs/reference/analysis-tools">Overview</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/analysis-tools/calculations">Calculations</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/analysis-tools/layer-analysis">Layer Analysis</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/analysis-tools/opportunity-index">Opportunity Index</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/analysis-tools/regions">Regions</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/analysis-tools/volumetric-calculations">Volumetric Calculations</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/analysis-tools/npv-calculations">NPV Calculations</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/analysis-tools/mismatches-analysis">Mismatches Analysis</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/analysis-tools/case-comparison">Case Comparison</a></li></ul></details></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/exporting-reports">Exporting Reports</a></li><li><a class="nav-link " href="/s3analyse-demo/docs/reference/python-scripting">Python Scripting</a></li></ul></details></nav></aside>
+
+    <main id="main-content" class="main">
+<div class="doc-layout"><article class="prose"><h1>Treeview Elements</h1><p class="lede">One of the main features of S3analyse is the user friendly way in which data is presented to the user.</p><h2 id="treeview-elements">Treeview Elements</h2>
+<hr />
+<h3 id="overview">Overview</h3>
+<p>One of the main features of S3analyse is the user friendly way in which data is presented to the user. The <a href="/s3analyse-demo/docs/reference/the-user-interface/project-view">Project View</a> gives a summary of the loaded data. The following sections detail how what is available from the data stored in this treeview.</p>
+<p>The selection options are context specific. The options for each context are:</p>
+<ul>
+<li><a href="/s3analyse-demo/docs/reference/the-user-interface/project-view/treeview-elements#Project">Project Folder</a></li>
+<li><a href="/s3analyse-demo/docs/reference/the-user-interface/project-view/treeview-elements#CaseFilter">Case Filter</a></li>
+<li><a href="/s3analyse-demo/docs/reference/the-user-interface/project-view/treeview-elements#Cases">Cases</a></li>
+<li><a href="/s3analyse-demo/docs/reference/the-user-interface/project-view/treeview-elements#Grid">Grid</a></li>
+<li><a href="/s3analyse-demo/docs/reference/the-user-interface/project-view/treeview-elements#Init">Init</a></li>
+<li><a href="/s3analyse-demo/docs/reference/the-user-interface/project-view/treeview-elements#Table">Table</a></li>
+<li><a href="/s3analyse-demo/docs/reference/the-user-interface/project-view/treeview-elements#Summary">Summary</a></li>
+<li><a href="/s3analyse-demo/docs/reference/the-user-interface/project-view/treeview-elements#RFT">RFT</a></li>
+<li><a href="/s3analyse-demo/docs/reference/the-user-interface/project-view/treeview-elements#Solution">Solution</a></li>
+<li><a href="/s3analyse-demo/docs/reference/the-user-interface/project-view/treeview-elements#ObservedData">Observed Data Files</a></li>
+<li><a href="/s3analyse-demo/docs/reference/the-user-interface/project-view/treeview-elements#CalculatedData">Calculated Data</a>
+<ul>
+<li>Calculations</li>
+<li>Layer Analysis</li>
+<li>Opportunity Index</li>
+<li>Regions</li>
+<li>Volumetric</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h3 id="element-project-folder"><a id="Project"></a>Element: Project Folder</h3>
+<p>Each loaded case or multi-case will be collected into a <a href="/s3analyse-demo/docs/reference/loading-data/projects">Project</a> and any associated data will be contained within this Project Folder.</p>
+<p>The Project Folder node has controls for affecting the data set as a whole.</p>
+<p>From the Project Folder node:</p>
+<p><img src="/s3analyse-demo/img/help/create-restart-16-n-p.png" alt="Create restart" /> Resample: Clicking this will launch the <a href="/s3analyse-demo/docs/reference/managing-data/resampling">Resample Settings</a>.</p>
+<p><img src="/s3analyse-demo/img/help/selectwelllistcontrol.png" alt="Select well list control" /> Select Well List: Any saved <a href="/s3analyse-demo/docs/reference/managing-data/well-lists">Well Lists</a> will be available for selection from this drop-down list. By default all the wells are included in the data set.</p>
+<p><img src="/s3analyse-demo/img/help/welllist-16-n-p.png" alt="Well list" /> Open Well List Manager: Clicking this button will launch the <a href="/s3analyse-demo/docs/reference/managing-data/well-lists">Well List Manager</a>.</p>
+<p><img src="/s3analyse-demo/img/help/welllistfilter-16-n-p.png" alt="Well list filter" /> Apply Well List: Toggling this button will apply the currently selected <a href="/s3analyse-demo/docs/reference/managing-data/well-lists">Well List</a> to the data set.</p>
+<h5 id="context-menu">Context Menu</h5>
+<p>The context menu for the Project Folder is:</p>
+<p><img src="/s3analyse-demo/img/help/projectviewdirectorycontextmenu.png" alt="Project view directory context menu" /></p>
+<p>Open Containing Folder</p>
+<p>This will open Windows Explorer at the location of the loaded case for the chosen project.</p>
+<p>Add Observed Data…</p>
+<p>This will open a file browser to select one or more text files containing observed data to associate with this project. See <a href="/s3analyse-demo/docs/reference/loading-data/supported-data-types/text-files">Text Files</a> for the supported formats.</p>
+<p>Delete Project</p>
+<p>This will remove the project from S3analyse and any associated charts.</p>
+<hr />
+<h3 id="element-case-filter"><a id="CaseFilter"></a>Element: Case Filter</h3>
+<p>When a project contains multiple cases the Case Filter is available in the Treeview. Filters can be applied to view only a selected subset of the loaded Cases.</p>
+<p>The default filter is &quot;*&quot; which matches everything. If the filter definition fails to match at least one Case then no Cases are selected.</p>
+<h5 id="filter-wildcards">Filter Wildcards</h5>
+<ul>
+<li>“*” matches all</li>
+<li>“?” matches a single character</li>
+<li>&quot;#&quot; matches a single digit character</li>
+</ul>
+<p>Filter elements are separated by commas or semicolons.</p>
+<p>The filter is applied/removed by clicking the Toggle Filter <img src="/s3analyse-demo/img/help/filter-16-n-p.png" alt="Filter" />.</p>
+<p>Clicking the Advanced Filter Settings <img src="/s3analyse-demo/img/help/settings-16-n-p.png" alt="Settings" /> expands the <a href="/s3analyse-demo/docs/reference/the-user-interface/project-view/project-wide-filter">Project-Wide Filter</a> on the right of the window, allowing more detailed filter options to be applied.</p>
+<hr />
+<h3 id="element-cases"><a id="Cases"></a>Element: Cases</h3>
+<p>When a project contains multiple cases the Cases is available. It lists all the loaded Cases for this project, subject to <a href="/s3analyse-demo/docs/reference/the-user-interface/project-view/treeview-elements#CaseFilter">Case Filtering</a>.</p>
+<p>The currently “Active” case is shown in parentheses on the parent Cases node. It is also indicated by bold highlighting in the expanded Cases list. By default, the first Case is the “Active” case.</p>
+<p>To select a different Active Case, expand the Cases branch and click the dot to the right of the required Case.</p>
+<p>Each Case has a context menu with Open Containing Folder. This will open Windows Explorer at the location of the loaded case for the chosen project.</p>
+<hr />
+<h3 id="element-grid"><a id="Grid"></a>Element: Grid</h3>
+<p>The Grid node lists the main grid, usually ROOT, and any Local Grid Refinements (LGRs) present in this model. Each treeview entry shows the grid dimensions.</p>
+<p>Double-clicking on a grid will produce a new <a href="/s3analyse-demo/docs/reference/grid-displays">Grid Display</a> of the default or first Solution property in the <a href="/s3analyse-demo/docs/reference/the-user-interface/display-area">Display Area</a>.</p>
+<h5 id="context-menu-1">Context Menu</h5>
+<p>The context menu for the Grid node is:</p>
+<p><img src="/s3analyse-demo/img/help/projectviewgridcontextmenu.png" alt="Project view grid context menu" /></p>
+<p>View Grid</p>
+<p>This will create a <a href="/s3analyse-demo/docs/reference/grid-displays">Gird Display</a> of the first grid, usually the ROOT, with the default map property.</p>
+<p>View Grid Details</p>
+<p>This will present the <a href="/s3analyse-demo/docs/reference/grid-displays/grid-details">Grid Details</a> dialog.</p>
+<p>Export Eclipse EGRID</p>
+<p>This will output the loaded grid(s) as an Eclipse EGRID formatted file.</p>
+<p>Export Eclipse GRID</p>
+<p>This will output the loaded grid(s) as an Eclipse GRID formatted file.</p>
+<hr />
+<h3 id="element-init"><a id="Init"></a>Element: Init</h3>
+<p>The Init node contains initial map properties of the grid (e.g. porosity and permeabilities).</p>
+<p>Double-clicking on a Init property will produce a new <a href="/s3analyse-demo/docs/reference/grid-displays">Grid Display</a> of the property in the <a href="/s3analyse-demo/docs/reference/the-user-interface/display-area">Display Area</a> for the main grid.</p>
+<h5 id="context-menu-2">Context Menu</h5>
+<p>The context menu for an Init property is:</p>
+<p><img src="/s3analyse-demo/img/help/projectviewinitpropertycontextmenu.png" alt="Project view init property context menu" /></p>
+<p>Grid &lt;gridname&gt; with &lt;property&gt;</p>
+<p>This will create a <a href="/s3analyse-demo/docs/reference/grid-displays">Gird Display</a> of the grid gridname with the chosen INIT property.</p>
+<p>Histogram for &lt;property&gt; in &lt;gridname&gt; Grid</p>
+<p>This will create a <a href="/s3analyse-demo/docs/reference/chart-displays/histograms">Histogram</a> of the grid gridname with the chosen INIT property.</p>
+<p>The submenu presents the other available grids.</p>
+<p>Line Analysis for &lt;property&gt; in &lt;gridname&gt; Grid</p>
+<p>This will create a <a href="/s3analyse-demo/docs/reference/chart-displays/line-analysis">Line Analysis</a> of the grid gridname with the chosen INIT property.</p>
+<p>The submenu presents the other available grids.</p>
+<p>Scatter Plot for &lt;property&gt; vs ...</p>
+<p>This will create a <a href="/s3analyse-demo/docs/reference/chart-displays/grid-scatter-plot">Scatter Plot</a> of the chosen INIT property.</p>
+<p>The submenu lists the other INIT properties to plot the chosen INIT property against.</p>
+<hr />
+<h3 id="element-table"><a id="Table"></a>Element: Table</h3>
+<p>The Table node contains Table data for the model (e.g PVT tables, Saturation tables, etc.).</p>
+<p>The table types are listed in the Table node. Each table type contains a list of the table indices.</p>
+<p>Double-clicking on a table index produces a <a href="/s3analyse-demo/docs/reference/chart-displays/table-data-charts">Table Data Chart</a> in the <a href="/s3analyse-demo/docs/reference/the-user-interface/display-area">Display Area</a> of the corresponding Table data corresponding chart.</p>
+<hr />
+<h3 id="element-summary"><a id="Summary"></a>Element: Summary</h3>
+<p>The Summary node contains Summary or Plot data for the model (e.g. Field data , Well data, etc.).</p>
+<p>The Summary data classes are list in the Summary node. Each class may contain sub-folders of members (e.g. wells) as appropriate. Further sub-folders are necessary for some classes (e.g. Completion data).</p>
+<p>Double-clicking on a Summary property will produce a new <a href="/s3analyse-demo/docs/reference/chart-displays/line-plots">Line Plot</a> of the property against Time in the <a href="/s3analyse-demo/docs/reference/the-user-interface/display-area">Display Area</a>.</p>
+<h5 id="context-menu-3">Context Menu</h5>
+<p>The context menu for a Summary property is:</p>
+<p><img src="/s3analyse-demo/img/help/projectviewsummarypropertycontextmenu.png" alt="Project view summary property context menu" /></p>
+<p>Plot &lt;property&gt; vs Time</p>
+<p>This will create a <a href="/s3analyse-demo/docs/reference/chart-displays/line-plots">Line Plot</a> of the chosen property against the Time property.</p>
+<p>Plot &lt;property&gt; for all &lt;members&gt;</p>
+<p>This will create a single <a href="/s3analyse-demo/docs/reference/chart-displays/line-plots">Line Plot</a> of the chosen property against Time for all members of the Summary Class, where appropriate, i.e. all wells, groups, etc.</p>
+<p>Plot &lt;property&gt; for all cases</p>
+<p>This will create a single <a href="/s3analyse-demo/docs/reference/chart-displays/line-plots">Line Plot</a> of the chosen property against Time for all loaded cases. This is only available for multi-case models.</p>
+<p>Plot &lt;property&gt; for filtered cases</p>
+<p>This will create a single <a href="/s3analyse-demo/docs/reference/chart-displays/line-plots">Line Plot</a> of the chosen property against Time for the <a href="/s3analyse-demo/docs/reference/the-user-interface/project-view/project-wide-filter">Filtered</a> cases. This is only available for multi-case models.</p>
+<p>Plot &lt;property&gt; vs ...</p>
+<p>This will create a <a href="/s3analyse-demo/docs/reference/chart-displays/line-plots">Line Plot</a> of the chosen property against an appropriate property chosen from the submenu.</p>
+<hr />
+<h3 id="element-rft"><a id="RFT"></a>Element: RFT</h3>
+<p>The RFT node contains Repeat Formation Test (RFT) data and Production Logging Tool (PLT) data: well pressure and depth measurements recorded at specific timesteps.</p>
+<p>If a case has no RFT file of its own, an equivalent data set is derived automatically from the loaded Grid, Init and Solution data, so the RFT node is available even when no dedicated RFT file has been loaded.</p>
+<p>Data under the RFT node is arranged as Timestep &gt; Well &gt; Branch &gt; property (e.g. PRESSURE, DEPTH). Wells with multiple laterals or perforated intervals present a separate Branch entry for each.</p>
+<p>Double-clicking a RFT property will open a new <a href="/s3analyse-demo/docs/reference/chart-displays/rft-plots">RFT Plot</a> in the <a href="/s3analyse-demo/docs/reference/the-user-interface/display-area">Display Area</a> showing a property-versus-depth chart alongside a data grid of the values.</p>
+<hr />
+<h3 id="element-solution"><a id="Solution"></a>Element: Solution</h3>
+<p>The Solution node contains dynamic map properties of the grid (e.g. Pressure, Oil Saturation, etc.).</p>
+<p>The Solution timesteps are listed in the Solution node. Each timestep contains its properties.</p>
+<p>Double-clicking on a Solution property will produce a new <a href="/s3analyse-demo/docs/reference/grid-displays">Grid Display</a> of the property in the <a href="/s3analyse-demo/docs/reference/the-user-interface/display-area">Display Area</a> for the main grid.</p>
+<h5 id="context-menu-4">Context Menu</h5>
+<p>The context menu for a Solution property is:</p>
+<p><img src="/s3analyse-demo/img/help/projectviewsolutionpropertycontextmenu.png" alt="Project view solution property context menu" /></p>
+<p>Grid &lt;gridname&gt; with &lt;property&gt;</p>
+<p>This will create a <a href="/s3analyse-demo/docs/reference/grid-displays">Gird Display</a> of the grid gridname with the chosen Solution property.</p>
+<p>Histogram for &lt;property&gt; in &lt;gridname&gt; Grid</p>
+<p>This will create a <a href="/s3analyse-demo/docs/reference/chart-displays/histograms">Histogram</a> of the grid gridname with the chosen Solution property.</p>
+<p>The submenu presents the other available grids.</p>
+<p>Line Analysis for &lt;property&gt; in &lt;gridname&gt; Grid</p>
+<p>This will create a <a href="/s3analyse-demo/docs/reference/chart-displays/line-analysis">Line Analysis</a> of the grid gridname with the chosen Solution property.</p>
+<p>The submenu presents the other available grids.</p>
+<p>Scatter Plot for &lt;property&gt; vs ...</p>
+<p>This will create a <a href="/s3analyse-demo/docs/reference/chart-displays/grid-scatter-plot">Scatter Plot</a> of the chosen Solution property.</p>
+<p>The submenu lists the other Solution properties to plot the chosen Solution property against.</p>
+<hr />
+<h3 id="element-observed-data-files"><a id="ObservedData"></a>Element: Observed Data Files</h3>
+<p>The Observed Data Files node will list any loaded data files containing <a href="/s3analyse-demo/docs/reference/loading-data/observed-data">Observed or History Data</a>.</p>
+<p>This node lists the loaded files. Within each file entry is a list of the properties, arranged as Summary or Solution as appropriate.</p>
+<hr />
+<h3 id="element-calculated-data"><a id="CalculatedData"></a>Element: Calculated Data</h3>
+<p>The Calculated Data node lists the available analysis tools for the selected project.</p>
+<p>This node contains the:</p>
+<ul>
+<li><a href="/s3analyse-demo/docs/reference/analysis-tools/calculations">Calculations</a>: User defined calculations.</li>
+<li><a href="/s3analyse-demo/docs/reference/analysis-tools/layer-analysis">Layer Analysis</a>: Layer Analysis of the grid.</li>
+<li><a href="/s3analyse-demo/docs/reference/analysis-tools/opportunity-index">Opportunity Index</a>: Calculated Opportunity Index properties.</li>
+<li><a href="/s3analyse-demo/docs/reference/analysis-tools/regions">Regions</a>: Defined regions of the map and grid. This includes <a href="/s3analyse-demo/docs/reference/grid-displays/grid-settings/threshold-regions">Threshold Regions</a> and Numeric Regions (PVT regions, etc.).</li>
+<li><a href="/s3analyse-demo/docs/reference/analysis-tools/volumetric-calculations">Volumetric</a>: Volumetric calculations for the model.</li>
+</ul>
+<h4 id="calculations">Calculations</h4>
+<p>Calculations allows new data properties to be derived from existing data. The newly created property is added to the treeview and can be used in the same way as any other property. A Calculation function could be used, for example, to find the ratio of gas to oil production or to find the difference between the production rates of two separate simulator runs.</p>
+<p>Double-clicking the Designs node brings up the <a href="/s3analyse-demo/docs/reference/analysis-tools/calculations">Calculations</a> dialog, where new calculations can be added.</p>
+<h4 id="layer-analysis">Layer Analysis</h4>
+<p><a href="/s3analyse-demo/docs/reference/analysis-tools/layer-analysis">Layer Analysis</a> allows grid map data to be analysed either by summing or averaging data over layers.</p>
+<p><img src="/s3analyse-demo/img/help/layeranalysistreeviewelementgroup.png" alt="Layer analysis treeview element group" /></p>
+<p>From the Layer Analysis node:</p>
+<p><img src="/s3analyse-demo/img/help/add-item-16-n-p.png" alt="Add item" /> Add Layer Analysis: This creates a new Layer Analysis that is added as a new Layer Analysis item to the bottom of the list.</p>
+<p>From the individual Layer Analyses nodes:</p>
+<p><img src="/s3analyse-demo/img/help/red-cross-16-n-p.png" alt="Red cross" /> Delete Layer Analysis: This delete the Layer Analysis.</p>
+<p><img src="/s3analyse-demo/img/help/settings-16-n-p.png" alt="Settings" /> Show Layer Analysis Settings: This presents the <a href="/s3analyse-demo/docs/reference/analysis-tools/layer-analysis">Layer Analysis</a> dialog, where you can select the required settings.</p>
+<p>The node is named with an index, 1 in the example above. The node also has a label that lists the layers that the analysis sums/averages, (1 - 14) or layers 1 to 14 in the above example.</p>
+<p>Each Layer Analysis contains a single-layer Grid node and corresponding Init and Solution nodes containing the summed or averaged properties. These are treated as Grid, Init and Solution Treeview Elements.</p>
+<h4 id="opportunity-index">Opportunity Index</h4>
+<p><a href="/s3analyse-demo/docs/reference/analysis-tools/opportunity-index">Opportunity Index</a> offers data properties output from a calculation of the Opportunity Index.</p>
+<p><img src="/s3analyse-demo/img/help/settings-16-n-p.png" alt="Settings" /> Show Opportunity Index Settings: This launches the <a href="/s3analyse-demo/docs/reference/analysis-tools/opportunity-index">Opportunity Index Settings</a>.</p>
+<p>The Opportunity Index contains data properties of the calculation for each Grid, <a href="/s3analyse-demo/docs/reference/analysis-tools/layer-analysis">Layer Analysis</a> and Solution Timestep, available to create a <a href="/s3analyse-demo/docs/reference/grid-displays/creating-grids">Grid Display</a> as normal.</p>
+<h4 id="regions-threshold-regions">Regions - Threshold Regions</h4>
+<p><a href="/s3analyse-demo/docs/reference/grid-displays/grid-settings/threshold-regions">Threshold Regions</a> are defined subsets of the grid cells defined by a range of map cell values.</p>
+<p><img src="/s3analyse-demo/img/help/regionstreeviewelementgroup.png" alt="Regions treeview element group" /></p>
+<p>From the Threshold Regions node:</p>
+<p><img src="/s3analyse-demo/img/help/add-item-16-n-p.png" alt="Add item" /> Add Threshold Regions: This creates a new <a href="/s3analyse-demo/docs/reference/grid-displays/grid-settings/threshold-settings">Threshold</a> that is added as a new Threshold Region item under the Threshold Regions node</p>
+<p>From the individual Threshold nodes:</p>
+<p><img src="/s3analyse-demo/img/help/red-cross-16-n-p.png" alt="Red cross" /> Delete Threshold Region: This delete the Threshold.</p>
+<p><img src="/s3analyse-demo/img/help/settings-16-n-p.png" alt="Settings" /> Show Threshold Region Settings: This presents the <a href="/s3analyse-demo/docs/reference/grid-displays/grid-settings/threshold-region-editor">Threshold Settings</a> dialog, where you can select the required settings.</p>
+<h4 id="regions-numeric-regions">Regions - Numeric Regions</h4>
+<p>The numeric regions defined by the loaded data (e.g. PVT, Saturation or Fluid in Place regions) are available from the Numeric Regions node. Each Numeric Region node is labelled with its associated property definition and the number of different regions defined.</p>
+<h4 id="volumetric">Volumetric</h4>
+<p>The In Place <a href="/s3analyse-demo/docs/reference/analysis-tools/volumetric-calculations">Volumetric Calculations</a> are defined in the Volumetric node. This lists the Gas, Oil and Water In Place values at Surface Conditions for each simulation timestep, weighted by Pore Volume.</p>
+<p>The SUM value is the total In Place volume added across all cells in the region. The AVERAGE value is the SUM divided by the number of active cells in the region to give the average cell contribution.</p>
+<p>Double-clicking on a Volumetric property will produce a new <a href="/s3analyse-demo/docs/reference/chart-displays/line-plots">Line Plot</a> of the property against Time in the <a href="/s3analyse-demo/docs/reference/the-user-interface/display-area">Display Area</a>.</p>
+</article>
+
+        <nav class="toc" aria-label="On this page"><p class="toc-title">On this page</p>
+        <ul><li class="toc-level-2"><a href="#treeview-elements">Treeview Elements</a></li><li class="toc-level-3"><a href="#overview">Overview</a></li><li class="toc-level-3"><a href="#element-project-folder">Element: Project Folder</a></li><li class="toc-level-3"><a href="#element-case-filter">Element: Case Filter</a></li><li class="toc-level-3"><a href="#element-cases">Element: Cases</a></li><li class="toc-level-3"><a href="#element-grid">Element: Grid</a></li><li class="toc-level-3"><a href="#element-init">Element: Init</a></li><li class="toc-level-3"><a href="#element-table">Element: Table</a></li><li class="toc-level-3"><a href="#element-summary">Element: Summary</a></li><li class="toc-level-3"><a href="#element-rft">Element: RFT</a></li><li class="toc-level-3"><a href="#element-solution">Element: Solution</a></li><li class="toc-level-3"><a href="#element-observed-data-files">Element: Observed Data Files</a></li><li class="toc-level-3"><a href="#element-calculated-data">Element: Calculated Data</a></li></ul></nav></div></main></div>
+
+<footer class="footer"><p>
+        S3analyse is developed by <strong>Sciencesoft Ltd</strong>.
+        Content on this site is derived from the S3analyse product help.
+    </p><p class="provenance">
+            Reference content generated from the S3analyse help dated
+            <time datetime="2026-08-20T07:16:30.8036067Z">20 August 2026 at 08:16</time>
+            — 197 topics, imported
+            <time datetime="2026-08-20T07:20:16.4335745Z">20 August 2026 at 08:20</time>.
+        </p><p class="provenance">Source: <code>C:\WebApplications\CHM\Dummy\S3analyse.chm</code></p></footer>
+        
+    <script src="_framework/blazor.web.js"></script>
+    <script src="js/theme.js"></script>
+    <script type="module" src="js/search.js"></script>
+    <script type="module" src="js/demos/boot.js"></script></body></html>

@@ -1,0 +1,1376 @@
+/* ==========================================================================
+   S3analyseWebContent — site stylesheet
+
+   Organised in sections, token-driven throughout. Every colour comes from a
+   custom property: the light palette is defined once on :root, and only the
+   token values are redefined for dark. Never hardcode a colour below the
+   Tokens section, or the dark theme silently breaks.
+   ========================================================================== */
+
+/* --- Tokens: light (the base palette) ----------------------------------- */
+
+:root {
+    /* Brand ramp — tune these to the official S3analyse product colours. */
+    --brand:            #1668a8;
+    --brand-strong:     #0f4d7d;
+    --brand-soft:       #e8f2fa;
+    --accent:           #17867d;
+
+    /* Surfaces */
+    --bg:               #ffffff;
+    --bg-sunken:        #f5f7f9;
+    --surface:          #ffffff;
+    --surface-raised:   #ffffff;
+    --topbar-bg:        #0f4d7d;
+    --topbar-fg:        #eaf3fa;
+    --topbar-fg-muted:  #b9d3e8;
+    --topbar-hover:     rgba(255, 255, 255, 0.14);
+
+    /* Text ramp */
+    --text:             #16212b;
+    --text-2:           #4a5a68;
+    --text-3:           #74838f;
+    --text-on-brand:    #ffffff;
+
+    /* Lines and shadow */
+    --border:           #dde4ea;
+    --border-strong:    #c3ced7;
+    --shadow:           0 1px 2px rgba(16, 33, 48, 0.06), 0 2px 8px rgba(16, 33, 48, 0.06);
+
+    /* Code */
+    --code-bg:          #f2f5f8;
+    --code-fg:          #0f3d5e;
+    --code-border:      #e0e7ed;
+
+    /* Focus */
+    --focus:            #0f6cba;
+
+    /* Scale */
+    --radius:           8px;
+    --radius-sm:        5px;
+    --sidebar-width:    280px;
+    --content-max:      52rem;
+    --topbar-height:    56px;
+
+    --font-sans:        system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --font-mono:        "Cascadia Mono", Consolas, "SF Mono", Menlo, monospace;
+
+    color-scheme: light;
+}
+
+/* --- Tokens: dark ------------------------------------------------------- */
+
+/*
+   Dark applies only when the visitor turns it on. The site deliberately does not
+   follow prefers-color-scheme: light is the default for everyone, and the Dark
+   switch starts off.
+*/
+:root[data-theme="dark"] {
+    --brand:            #4aa3e0;
+    --brand-strong:     #7cc0ee;
+    --brand-soft:       #14293a;
+    --accent:           #4ec9bd;
+
+    --bg:               #0e1620;
+    --bg-sunken:        #0a1017;
+    --surface:          #151f2b;
+    --surface-raised:   #1a2634;
+    --topbar-bg:        #0a1017;
+    --topbar-fg:        #e6eef6;
+    --topbar-fg-muted:  #93a6b6;
+    --topbar-hover:     rgba(255, 255, 255, 0.10);
+
+    --text:             #e3ebf2;
+    --text-2:           #a9bac8;
+    --text-3:           #7b8b99;
+    --text-on-brand:    #08131d;
+
+    --border:           #26333f;
+    --border-strong:    #384857;
+    --shadow:           0 1px 2px rgba(0, 0, 0, 0.4), 0 2px 10px rgba(0, 0, 0, 0.3);
+
+    --code-bg:          #0d1722;
+    --code-fg:          #9fd0f0;
+    --code-border:      #24313d;
+
+    --focus:            #6fb6ea;
+
+    color-scheme: dark;
+}
+
+/* --- Tokens: S3analyse chart chrome (deliberately theme-invariant) ------- */
+
+/*
+   These reproduce S3analyse's own chart appearance and MUST NOT be redefined for
+   the dark theme. An interactive demo exists to show the visitor what the product
+   looks like, so its chart is a faithful artefact framed by the page rather than
+   site furniture that follows the Dark switch — see docs/ADR-002-interactive-demos.md.
+
+   The series ramp is Source/Utility/ColourChart.cs verbatim, applied by insertion
+   index modulo 12, so the first curve is black exactly as it is in the product.
+   Do not "fix" these values for contrast: they are correct because they match, and
+   they are only ever drawn on the product's white plot background.
+*/
+:root {
+    /*
+       Sampled pixel-by-pixel from wwwroot/img/help/lineplotexample.png rather than eyeballed —
+       the screenshot's apparent blues and browns are LCD subpixel fringing, and the chart is
+       almost entirely #808080 grey on white.
+    */
+    --s3-window-border:   #ababab;
+    --s3-window-bevel:    #cfcfcf;
+    --s3-window-bg:       #ffffff;
+    --s3-tab-fg:          #2a8dd4;
+    --s3-plot-bg:         #ffffff;
+    --s3-title-fg:        #808080;
+    --s3-axis-title-fg:   #808080;
+    --s3-axis-line:       #808080;
+    --s3-tick-fg:         #808080;
+    --s3-gridline:        #dfdfdf;
+    --s3-legend-bg:       #fffbf0;
+    --s3-legend-border:   #000000;
+    --s3-legend-fg:       #201f1e;
+    --s3-crosshair:       #ababab;
+
+    --s3-series-1:        #000000;
+    --s3-series-2:        #ff0000;
+    --s3-series-3:        #00ff00;
+    --s3-series-4:        #0000ff;
+    --s3-series-5:        #ff00ff;
+    --s3-series-6:        #00ffff;
+    --s3-series-7:        #800000;
+    --s3-series-8:        #008000;
+    --s3-series-9:        #000080;
+    --s3-series-10:       #800080;
+    --s3-series-11:       #008080;
+    --s3-series-12:       #808080;
+
+    /* Grid viewer: the product's 3D view is always black regardless of theme, per
+       wwwroot/img/help/grid-settings-standard.png. Legend/caption text is white on that black,
+       not a site text token — see wwwroot/js/demos/grid-viewer.js. */
+    --s3-grid-bg:         #000000;
+    --s3-grid-fg:         #ffffff;
+}
+
+/* --- Reset -------------------------------------------------------------- */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+/*
+   Disabled globally, not just on the demo dialog: scroll anchoring runs on the page's actual
+   scroll container (the viewport), so excluding one subtree only makes the browser pick a
+   DIFFERENT anchor further down the page and keep compensating around it — which is exactly
+   what made the page jump to the restore bar / a heading below the dialog when a tree click or
+   a series removal changed the dialog's height. See wwwroot/js/demos/line-plot.js.
+*/
+html { overflow-anchor: none; }
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--brand); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+img { max-width: 100%; height: auto; }
+
+:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+    border-radius: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+/* --- Skip link ---------------------------------------------------------- */
+
+.skip-link {
+    position: absolute;
+    left: -9999px;
+    z-index: 100;
+    padding: 0.6rem 1rem;
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-sm);
+}
+.skip-link:focus { left: 1rem; top: 0.5rem; }
+
+/* --- Topbar ------------------------------------------------------------- */
+
+.topbar {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    height: var(--topbar-height);
+    padding: 0 1rem;
+    background: var(--topbar-bg);
+    color: var(--topbar-fg);
+}
+
+.brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    color: var(--topbar-fg);
+    font-weight: 650;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+}
+.brand:hover { text-decoration: none; opacity: 0.9; }
+.brand img { display: block; }
+
+.topbar-actions { margin-left: auto; display: flex; align-items: center; gap: 0.25rem; }
+
+.theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    background: transparent;
+    color: var(--topbar-fg);
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+}
+.theme-toggle:hover { background: var(--topbar-hover); }
+.theme-icon { display: block; }
+
+/* Show the icon for the theme you would switch *to*. */
+.theme-icon-light { display: none; }
+:root[data-theme="dark"] .theme-icon-dark { display: none; }
+:root[data-theme="dark"] .theme-icon-light { display: block; }
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .theme-icon-dark { display: none; }
+    :root:not([data-theme="light"]) .theme-icon-light { display: block; }
+}
+
+/* --- Breadcrumb --------------------------------------------------------- */
+
+.breadcrumb { min-width: 0; overflow: hidden; }
+.breadcrumb ol {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 0.4rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 0.85rem;
+    color: var(--topbar-fg-muted);
+    white-space: nowrap;
+}
+.breadcrumb li { display: flex; align-items: center; gap: 0.4rem; min-width: 0; }
+.breadcrumb li + li::before { content: "/"; color: var(--topbar-fg-muted); opacity: 0.6; }
+.breadcrumb a { color: var(--topbar-fg-muted); }
+.breadcrumb a:hover { color: var(--topbar-fg); }
+.breadcrumb span { color: var(--topbar-fg); overflow: hidden; text-overflow: ellipsis; }
+
+/* --- Shell -------------------------------------------------------------- */
+
+.shell {
+    display: grid;
+    grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+    align-items: start;
+    min-height: calc(100vh - var(--topbar-height));
+}
+
+.sidebar {
+    position: sticky;
+    top: var(--topbar-height);
+    max-height: calc(100vh - var(--topbar-height));
+    overflow-y: auto;
+    padding: 1.25rem 0.75rem 2rem;
+    background: var(--bg-sunken);
+    border-right: 1px solid var(--border);
+}
+
+.main {
+    min-width: 0;
+    padding: 2rem 2.5rem 4rem;
+}
+
+/* --- Sidebar navigation ------------------------------------------------- */
+
+.sidenav { font-size: 0.9rem; }
+
+.nav-list { list-style: none; margin: 0; padding: 0 0 0 0.75rem; }
+
+.nav-link {
+    display: block;
+    padding: 0.3rem 0.55rem;
+    color: var(--text-2);
+    border-radius: var(--radius-sm);
+    border-left: 2px solid transparent;
+}
+.nav-link:hover { background: var(--surface-raised); color: var(--text); text-decoration: none; }
+.nav-link.active {
+    color: var(--brand);
+    background: var(--brand-soft);
+    border-left-color: var(--brand);
+    font-weight: 600;
+}
+.nav-link-inert { color: var(--text-3); cursor: default; }
+.nav-link-inert:hover { background: none; color: var(--text-3); }
+
+.nav-group { margin: 0.15rem 0; }
+.nav-group-title {
+    padding: 0.35rem 0.55rem;
+    color: var(--text);
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+    list-style: none;
+}
+.nav-group-title::-webkit-details-marker { display: none; }
+.nav-group-title::before {
+    content: "\25B8";
+    display: inline-block;
+    width: 1em;
+    color: var(--text-3);
+    transition: transform 0.15s ease;
+}
+.nav-group[open] > .nav-group-title::before { transform: rotate(90deg); }
+.nav-group-title:hover { background: var(--surface-raised); }
+
+/* --- Prose (rendered Markdown) ------------------------------------------ */
+
+.doc-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 15rem;
+    gap: 3rem;
+    align-items: start;
+}
+
+.prose { max-width: var(--content-max); }
+.prose h1 { margin: 0 0 0.5rem; font-size: 2rem; line-height: 1.25; letter-spacing: -0.01em; }
+.prose h2 { margin: 2.25rem 0 0.75rem; font-size: 1.4rem; line-height: 1.3; }
+.prose h3 { margin: 1.75rem 0 0.5rem; font-size: 1.12rem; }
+.prose p { margin: 0 0 1rem; }
+.prose ul, .prose ol { margin: 0 0 1rem; padding-left: 1.4rem; }
+.prose li { margin: 0.25rem 0; }
+.prose img { border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); }
+.prose hr { border: 0; border-top: 1px solid var(--border); margin: 2rem 0; }
+
+.prose blockquote {
+    margin: 0 0 1rem;
+    padding: 0.6rem 1rem;
+    border-left: 3px solid var(--brand);
+    background: var(--bg-sunken);
+    color: var(--text-2);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+.lede { font-size: 1.1rem; color: var(--text-2); margin-bottom: 1.5rem; }
+
+.prose code {
+    padding: 0.12em 0.36em;
+    background: var(--code-bg);
+    color: var(--code-fg);
+    border: 1px solid var(--code-border);
+    border-radius: 4px;
+    font-family: var(--font-mono);
+    font-size: 0.88em;
+}
+.prose pre {
+    margin: 0 0 1rem;
+    padding: 0.9rem 1rem;
+    overflow-x: auto;
+    background: var(--code-bg);
+    border: 1px solid var(--code-border);
+    border-radius: var(--radius);
+}
+.prose pre code { padding: 0; background: none; border: 0; }
+
+/* Wide tables scroll rather than forcing the page to scroll sideways. */
+.prose table {
+    display: block;
+    width: max-content;
+    max-width: 100%;
+    overflow-x: auto;
+    border-collapse: collapse;
+    margin: 0 0 1rem;
+    font-size: 0.92rem;
+}
+.prose th, .prose td { padding: 0.45rem 0.7rem; border: 1px solid var(--border); text-align: left; }
+.prose th { background: var(--bg-sunken); font-weight: 600; }
+
+/* --- On-page contents --------------------------------------------------- */
+
+.toc {
+    position: sticky;
+    top: calc(var(--topbar-height) + 2rem);
+    font-size: 0.85rem;
+    border-left: 1px solid var(--border);
+    padding-left: 1rem;
+}
+.toc-title { margin: 0 0 0.5rem; color: var(--text-3); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; font-size: 0.72rem; }
+.toc ul { list-style: none; margin: 0; padding: 0; }
+.toc li { margin: 0.3rem 0; }
+.toc a { color: var(--text-2); }
+.toc a:hover { color: var(--brand); }
+.toc-level-3 { padding-left: 0.85rem; }
+
+/* --- Cards -------------------------------------------------------------- */
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+    gap: 1rem;
+    margin: 1rem 0 2rem;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding: 1rem 1.1rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    color: var(--text);
+}
+.card:hover { border-color: var(--brand); text-decoration: none; }
+.card-title { font-weight: 640; color: var(--brand); }
+.card-summary { color: var(--text-2); font-size: 0.9rem; }
+
+/* --- Home page ---------------------------------------------------------- */
+
+.hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 3rem;
+    align-items: center;
+    padding: 1rem 0 3rem;
+}
+.hero h1 { margin: 0 0 0.75rem; font-size: 2.6rem; line-height: 1.1; letter-spacing: -0.02em; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.5rem; }
+.hero-image img { border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); }
+
+.pillars {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    gap: 2rem;
+    padding: 2.5rem 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+}
+.pillars h2 { margin: 0 0 0.5rem; font-size: 1.15rem; color: var(--brand); }
+.pillars p { margin: 0; color: var(--text-2); }
+
+.features { padding: 2.5rem 0 0; }
+.features > h2 { margin: 0 0 0.5rem; font-size: 1.5rem; }
+
+/* --- Buttons ------------------------------------------------------------ */
+
+.button {
+    display: inline-block;
+    padding: 0.55rem 1.1rem;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    color: var(--text);
+    font-weight: 550;
+}
+.button:hover { border-color: var(--brand); text-decoration: none; }
+.button-primary { background: var(--brand); border-color: var(--brand); color: var(--text-on-brand); }
+.button-primary:hover { background: var(--brand-strong); border-color: var(--brand-strong); }
+
+/* --- Search ------------------------------------------------------------- */
+
+.sr-only {
+    position: absolute;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.searchbox { display: flex; align-items: center; }
+
+.searchbox-input {
+    width: 13rem;
+    max-width: 40vw;
+    padding: 0.35rem 0.6rem;
+    background: var(--topbar-hover);
+    color: var(--topbar-fg);
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+    font-size: 0.9rem;
+    font-family: inherit;
+}
+.searchbox-input::placeholder { color: var(--topbar-fg-muted); }
+.searchbox-input:focus { background: var(--surface); color: var(--text); border-color: var(--focus); outline: none; }
+
+.searchbox-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 32px;
+    background: var(--topbar-hover);
+    color: var(--topbar-fg);
+    border: 1px solid transparent;
+    border-left: 0;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    cursor: pointer;
+}
+.searchbox-button svg { display: block; }
+.searchbox-button:hover { background: var(--brand); color: var(--text-on-brand); }
+
+/* On the results page the box sits in the content area, not the dark topbar. */
+.search-page .searchbox { margin: 0 0 1.5rem; }
+.search-page .searchbox-input {
+    width: 100%;
+    max-width: 28rem;
+    padding: 0.6rem 0.8rem;
+    background: var(--surface);
+    color: var(--text);
+    border-color: var(--border-strong);
+    font-size: 1rem;
+}
+.search-page .searchbox-button {
+    height: auto;
+    align-self: stretch;
+    width: 44px;
+    background: var(--surface);
+    color: var(--text-2);
+    border-color: var(--border-strong);
+}
+
+.results { list-style: none; margin: 0; padding: 0; }
+
+.result {
+    padding: 0.9rem 0;
+    border-bottom: 1px solid var(--border);
+}
+.result-title { font-weight: 620; font-size: 1.05rem; }
+.result-section {
+    margin-left: 0.6rem;
+    color: var(--text-3);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+.result-snippet { margin: 0.3rem 0 0; color: var(--text-2); font-size: 0.92rem; }
+
+.result-snippet mark {
+    padding: 0 0.1em;
+    background: var(--brand-soft);
+    color: var(--text);
+    border-radius: 2px;
+    font-weight: 600;
+}
+
+/* --- Footer ------------------------------------------------------------- */
+
+.footer {
+    padding: 2rem 2.5rem;
+    background: var(--bg-sunken);
+    border-top: 1px solid var(--border);
+    color: var(--text-3);
+    font-size: 0.85rem;
+}
+.footer p { margin: 0; }
+.footer .provenance { margin-top: 0.4rem; font-size: 0.8rem; opacity: 0.85; }
+
+/* --- Mobile navigation --------------------------------------------------
+   CSS-only: a hidden checkbox in the layout toggles the sidebar. No script and
+   no Blazor circuit involved, so it works under static rendering.
+   ----------------------------------------------------------------------- */
+
+.nav-toggle-input { position: absolute; opacity: 0; pointer-events: none; }
+
+.nav-toggle-button {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    margin-left: -0.35rem;
+    border-radius: var(--radius-sm);
+    color: var(--topbar-fg);
+    font-size: 1.25rem;
+    cursor: pointer;
+}
+.nav-toggle-button:hover { background: var(--topbar-hover); }
+
+@media (max-width: 900px) {
+    .doc-layout { grid-template-columns: minmax(0, 1fr); gap: 0; }
+    .toc { display: none; }
+    .hero { grid-template-columns: minmax(0, 1fr); gap: 2rem; }
+    .hero h1 { font-size: 2rem; }
+}
+
+@media (max-width: 720px) {
+    .nav-toggle-button { display: inline-flex; }
+    .breadcrumb { display: none; }
+
+    /* Touch targets need to be at least 44px; 36px is comfortable with a mouse but not a thumb.
+       The theme button keeps its automatic width so the text label is not squashed. */
+    .nav-toggle-button,
+    .theme-toggle { width: 44px; height: 44px; }
+
+    /*
+       There is not room for a text field in a 375px topbar — with it, the theme toggle was
+       pushed off the right edge. Collapse to the button alone: submitting the empty form
+       lands on /search, which has a full-width field of its own.
+    */
+    .topbar .searchbox-input { display: none; }
+    .topbar .searchbox-button {
+        width: 44px;
+        height: 44px;
+        border-left: 1px solid transparent;
+        border-radius: var(--radius-sm);
+        background: transparent;
+        font-size: 1rem;
+    }
+
+    /* Same reasoning for navigation links once the sidebar is open on a phone. */
+    .nav-link,
+    .nav-group-title { padding-top: 0.6rem; padding-bottom: 0.6rem; }
+
+    .shell { grid-template-columns: minmax(0, 1fr); }
+
+    .sidebar {
+        display: none;
+        position: static;
+        max-height: none;
+        border-right: 0;
+        border-bottom: 1px solid var(--border);
+    }
+    .nav-toggle-input:checked ~ .shell .sidebar { display: block; }
+
+    .main { padding: 1.5rem 1.25rem 3rem; }
+    .footer { padding: 1.5rem 1.25rem; }
+}
+
+/* --- Demos (interactive figures) ---------------------------------------- */
+
+/*
+   Only the surround is site-native. The chart inside .demo-plot draws itself entirely from the
+   theme-invariant --s3-* tokens, because it is a reproduction of S3analyse rather than site
+   furniture — so do not add colours to it here.
+*/
+
+figure.demo {
+    margin: 2rem 0;
+}
+
+.demo-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.demo-plot { min-width: 0; }
+
+/* The prose rules give images a border and make tables block-level; neither should reach a demo. */
+.prose figure.demo img { border: 0; border-radius: 0; }
+
+/*
+   A replica of S3analyse's "Line Chart Settings" window, measured from
+   wwwroot/img/help/linechartsettings-legend.png. It is deliberately Windows-shaped rather than
+   web-shaped: a generic web sidebar beside a faithful chart would advertise a product that does
+   not exist. Like the chart, it ignores the site's theme.
+*/
+
+.s3-dialog {
+    max-width: 620px;
+    width: 100%;
+    border: 1px solid #267fb6;
+    background: #ffffff;
+    color: #000000;
+    font-family: "Segoe UI", system-ui, sans-serif;
+    font-size: 12px;
+    line-height: 1.35;
+    /* Selecting a tree node swaps the panel for one of a different height (Legend vs an axis
+       page vs a series). Chrome/Firefox's scroll anchoring then "helpfully" shifts the whole
+       page to compensate, which reads as the page jumping on every click. Opting out here is
+       the documented fix — there is no scroll/focus call in this file causing it. */
+    overflow-anchor: none;
+}
+
+.s3-dialog-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 8px;
+    color: #444444;
+}
+
+.s3-dialog-title h3 {
+    flex: 1;
+    margin: 0;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 400;
+    color: #444444;
+}
+
+.s3-dialog-body {
+    display: grid;
+    grid-template-columns: 165px minmax(0, 1fr);
+    gap: 10px;
+    padding: 0 10px 8px;
+}
+
+.s3-tree {
+    border: 1px solid #ababab;
+    background: #ffffff;
+    padding: 4px 0;
+    min-height: 260px;
+}
+
+.s3-tree ul { list-style: none; margin: 0; padding: 0 0 0 14px; }
+.s3-tree > ul { padding-left: 4px; }
+
+.s3-node {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    width: 100%;
+    padding: 2px 6px;
+    border: 0;
+    background: none;
+    font: inherit;
+    color: #000000;
+    text-align: left;
+    cursor: pointer;
+}
+
+.s3-expander {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 10px;
+    flex: 0 0 10px;
+}
+
+.s3-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    flex: 0 0 16px;
+}
+
+.s3-node-label { white-space: nowrap; }
+.s3-node[aria-current="true"] .s3-node-label { font-weight: 600; }
+
+/* A heading, not a page — no button semantics, no hover/selection affordance. */
+span.s3-node.s3-node-heading {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    width: 100%;
+    padding: 2px 6px;
+    cursor: default;
+}
+
+.s3-node:not(.s3-node-heading):hover { background: #e8f2fc; }
+.s3-node[aria-current="true"] { background: #d1e3f7; }
+.s3-node:focus-visible { outline: 1px dotted #000000; outline-offset: -2px; }
+
+.s3-node-remove {
+    margin-left: auto;
+    border: 0;
+    background: none;
+    color: #cc2222;
+    font-size: 13px;
+    line-height: 1;
+    padding: 0 2px;
+    cursor: pointer;
+}
+
+.s3-panel { min-width: 0; }
+
+.s3-group {
+    border: 1px solid #d5dfe5;
+    margin: 0 0 10px;
+    padding: 4px 12px 10px;
+}
+
+.s3-group > legend {
+    padding: 0 4px;
+    color: #000000;
+    font-size: 12px;
+}
+
+.s3-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 3px 0;
+}
+
+.s3-row > span:first-child { flex: 0 0 175px; }
+.s3-row.is-disabled { opacity: 0.45; }
+.s3-row[data-kind="check"] > span:first-child { flex: 0 1 auto; }
+
+/*
+   The controls are replicas of the product's, not styled web inputs: a native <select> or spinner
+   next to a faithful chart reads as a different application. Native elements are kept underneath
+   for keyboard and screen-reader behaviour, with their platform appearance removed.
+*/
+
+.s3-dialog select {
+    width: 148px;
+    height: 24px;
+    padding: 1px 24px 1px 5px;
+    font: inherit;
+    color: #000000;
+    background-color: #ffffff;
+    border: 1px solid #ababab;
+    border-radius: 0;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='4'%3E%3Cpath d='M0 0h7L3.5 4z' fill='%23333333'/%3E%3C/svg%3E"),
+        linear-gradient(#ababab, #ababab);
+    background-repeat: no-repeat, no-repeat;
+    background-position: right 7px center, right 21px top;
+    background-size: 7px 4px, 1px 100%;
+}
+
+.s3-dialog select:disabled { color: #7f7f7f; background-color: #f4f4f4; }
+
+.s3-dialog input[type="text"],
+.s3-dialog input[type="date"] {
+    flex: 1;
+    min-width: 0;
+    padding: 2px 5px;
+    font: inherit;
+    color: #000000;
+    background: #ffffff;
+    border: 1px solid #ababab;
+    border-radius: 0;
+}
+
+.s3-dialog input[type="text"]:disabled,
+.s3-dialog input[type="date"]:disabled { color: #7f7f7f; background: #f4f4f4; }
+
+/*
+   The product draws this as a plain, unthemed WPF Slider — a thin light-grey groove, a small
+   pale thumb, tick marks above. Native <input type=range> pseudo-elements (::-webkit-slider-*,
+   ::-moz-range-*) render this unreliably across browsers — Firefox in particular renders an
+   extra ::-moz-range-progress layer that was never styled, which is why the track rendered as a
+   thick solid bar instead of a thin line. The visual is built entirely from plain elements this
+   file fully controls; the native input sits on top, fully transparent, purely for real
+   dragging/keyboard support. See line-plot.js's 'slider' control for the positioning logic.
+*/
+.s3-slider-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    flex: 1;
+    min-width: 0;
+}
+
+.s3-slider-ticks {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 6px;
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none;
+}
+
+.s3-slider-ticks span {
+    width: 1px;
+    height: 6px;
+    background: #a0a0a0;
+}
+
+.s3-slider-track {
+    position: relative;
+    width: 100%;
+    height: 16px;
+}
+
+.s3-slider-line {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    height: 2px;
+    background: #cfcfcf;
+    transform: translateY(-50%);
+}
+
+.s3-slider-fill {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    height: 2px;
+    background: #9a9a9a;
+    transform: translateY(-50%);
+}
+
+.s3-slider-thumb {
+    position: absolute;
+    top: 50%;
+    width: 9px;
+    height: 15px;
+    margin-left: -5px;
+    background: #f3f3f3;
+    border: 1px solid #9a9a9a;
+    border-radius: 2px;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+.s3-slider-track input[type="range"] {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.s3-slider-caption {
+    font-size: 11px;
+    color: #000000;
+}
+
+.s3-font-preview {
+    margin-left: 4px;
+    font-style: italic;
+    color: #7f7f7f;
+}
+
+.s3-row-revert {
+    justify-content: flex-end;
+}
+
+.s3-revert-button {
+    padding: 2px 6px;
+    font-size: 13px;
+    line-height: 1;
+    color: #267fb6;
+    background: none;
+    border: 0;
+    cursor: pointer;
+}
+
+.s3-revert-button:hover { color: #1a5c85; }
+
+/* Numeric spinner: right-aligned value with stacked arrows in a divided cell. */
+.s3-spin {
+    display: inline-flex;
+    width: 104px;
+    height: 24px;
+    background: #ffffff;
+    border: 1px solid #ababab;
+}
+
+.s3-spin input {
+    flex: 1;
+    min-width: 0;
+    padding: 1px 5px;
+    font: inherit;
+    color: #000000;
+    text-align: right;
+    background: transparent;
+    border: 0;
+    appearance: textfield;
+    -moz-appearance: textfield;
+}
+
+.s3-spin input::-webkit-outer-spin-button,
+.s3-spin input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+.s3-spin-arrows {
+    display: flex;
+    flex-direction: column;
+    width: 17px;
+    border-left: 1px solid #ababab;
+}
+
+.s3-spin-arrows button {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    font-size: 6px;
+    line-height: 1;
+    color: #333333;
+    background: #ffffff;
+    border: 0;
+    cursor: pointer;
+}
+
+.s3-spin-arrows button + button { border-top: 1px solid #ababab; }
+.s3-spin-arrows button:hover { background: #e8f2fc; }
+.s3-spin.is-disabled { background: #f4f4f4; }
+.s3-spin.is-disabled input { color: #7f7f7f; }
+
+/* Colour picker: swatch plus a drop-down arrow, as the product draws it. */
+.s3-colour {
+    display: inline-flex;
+    align-items: stretch;
+    height: 24px;
+    padding: 0;
+    background: #ffffff;
+    border: 1px solid #ababab;
+    cursor: pointer;
+}
+
+.s3-colour-swatch { width: 32px; margin: 2px; border: 1px solid #d0d0d0; }
+
+.s3-colour-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 17px;
+    font-size: 6px;
+    color: #333333;
+    border-left: 1px solid #ababab;
+}
+
+/*
+   The compound colour popup: Current Color preview, Current Color Palette, Recent Color
+   Palette, Advanced — measured from the real "Colour:" dropdown, not a bare swatch grid.
+*/
+.s3-palette {
+    position: absolute;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 216px;
+    padding: 8px;
+    background: #ffffff;
+    border: 1px solid #ababab;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+.s3-palette-label {
+    margin: 4px 0 1px;
+    font-size: 11px;
+    color: #000000;
+}
+
+.s3-palette-preview {
+    height: 26px;
+    border: 1px solid #ababab;
+}
+
+.s3-palette-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px;
+}
+
+.s3-palette-row button {
+    width: 18px;
+    height: 18px;
+    padding: 0;
+    border: 1px solid #d0d0d0;
+    cursor: pointer;
+}
+
+.s3-palette-row button[aria-current="true"] { outline: 2px solid #267fb6; outline-offset: -2px; }
+
+.s3-palette-row button.is-empty {
+    background: #ffffff;
+    border-style: dashed;
+    cursor: default;
+}
+
+.s3-palette-advanced {
+    margin-top: 4px;
+    width: 100%;
+    padding: 4px 0;
+    font: inherit;
+    color: #000000;
+    background: #dddddd;
+    border: 1px solid #707070;
+    cursor: pointer;
+}
+
+.s3-palette-advanced:hover { background: #e8e8e8; }
+
+/* Never shown directly — .click()-ed by Advanced so the browser's own colour dialog opens. */
+.s3-palette-native {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Checkbox, drawn rather than left to the platform. */
+.s3-dialog input[type="checkbox"] {
+    width: 14px;
+    height: 14px;
+    margin: 0;
+    background: #ffffff;
+    border: 1px solid #707070;
+    border-radius: 0;
+    appearance: none;
+    -webkit-appearance: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.s3-dialog input[type="checkbox"]:checked::after {
+    content: "";
+    width: 9px;
+    height: 5px;
+    margin-top: -2px;
+    border-left: 2px solid #000000;
+    border-bottom: 2px solid #000000;
+    transform: rotate(-45deg);
+}
+
+.s3-dialog input[type="checkbox"]:disabled { background: #f4f4f4; border-color: #b0b0b0; }
+
+figure.demo > figcaption {
+    margin-top: 0.75rem;
+    font-size: 0.85rem;
+    color: var(--text-3);
+}
+
+@media (max-width: 620px) {
+    .s3-dialog-body {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .s3-tree { min-height: 0; }
+    .s3-row { flex-wrap: wrap; }
+    .s3-row > span:first-child { flex: 0 0 auto; }
+}
+
+/*
+   Deliberately NOT dialog chrome: this is page furniture standing in for the project tree /
+   Miller columns, which are out of scope for a demo. Styled with the site's own tokens (unlike
+   the emulated window) so it reads as a substitute, not as more of the product.
+*/
+.demo-restore {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+    padding: 8px 10px;
+    font-size: 0.82rem;
+    color: var(--text-2);
+    background: var(--surface);
+    border: 1px dashed var(--border-strong);
+    border-radius: var(--radius-sm);
+}
+
+.demo-restore-select {
+    flex: 1;
+    max-width: 240px;
+    padding: 3px 5px;
+    font: inherit;
+    color: var(--text);
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-sm);
+}
+
+.demo-restore-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+/* The "this is interactive" signal, deliberately OUTSIDE the emulated viewport/dialog (see the
+   comment where this is built in each demo's mount()) and first in the page, ahead of the
+   viewport itself — .demo-live-hint below repeats the message in more detail, but sits after the
+   viewport, easy to scroll past without noticing. */
+.demo-badge {
+    display: inline-flex;
+    /* .demo-wrap is a column flexbox with no align-items set, so its default `stretch` would
+       otherwise override this element's own inline-flex sizing and stretch it full width — this
+       opts just the badge out, without touching the parent (other children, like the plot, DO
+       want the default full-width stretch). */
+    align-self: flex-start;
+    align-items: center;
+    gap: 6px;
+    margin: 0 0 10px;
+    padding: 4px 12px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: var(--accent);
+    background: var(--brand-soft);
+    border-radius: 999px;
+}
+
+.demo-badge svg { flex: 0 0 auto; }
+
+.demo-live-hint {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0 0 8px;
+    font-size: 0.82rem;
+    font-style: italic;
+    color: var(--text-3);
+}
+
+.demo-live-hint svg { flex: 0 0 auto; color: var(--accent); }
+
+.demo-open {
+    padding: 4px 12px;
+    font: inherit;
+    font-size: 0.82rem;
+    color: var(--text);
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+}
+
+.demo-open:hover { background: var(--bg-sunken); }
+
+/* --- Grid viewer demo ---------------------------------------------------
+   The viewport is the fidelity target here, the same way the SVG chart is for the line plot —
+   see grid-viewer.js. Legend and caption are drawn as HTML overlays on top of the WebGL canvas
+   rather than inside it, which keeps their text crisp at any pixel ratio and keeps the colour
+   math in one place (schemeHue()) instead of duplicated into a canvas 2D re-render. */
+
+.demo-grid-viewport {
+    position: relative;
+    width: 100%;
+    background: var(--s3-grid-bg);
+    overflow: hidden;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-sm);
+}
+
+.demo-grid-viewport canvas { display: block; width: 100% !important; height: 100% !important; }
+
+.demo-grid-legend-host { position: absolute; left: 0; top: 0; bottom: 0; pointer-events: none; }
+
+.demo-grid-legend {
+    position: absolute;
+    left: 14px;
+    top: 14px;
+    bottom: 46px;
+    display: flex;
+    flex-direction: column;
+    color: var(--s3-grid-fg);
+    font-family: "Segoe UI", system-ui, sans-serif;
+    font-size: 11px;
+}
+
+.demo-grid-legend-title { margin-bottom: 6px; white-space: nowrap; }
+
+.demo-grid-legend-bar-wrap { position: relative; flex: 1; display: flex; }
+
+.demo-grid-legend-bar { width: 22px; border: 1px solid #444444; }
+
+.demo-grid-legend-ticks { position: relative; flex: 1; }
+
+.demo-grid-legend-tick {
+    position: absolute;
+    left: 0;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    transform: translateY(-50%);
+    white-space: nowrap;
+}
+
+.demo-grid-legend-tick-mark { width: 6px; height: 1px; background: var(--s3-grid-fg); }
+
+.demo-grid-axis-labels { position: absolute; inset: 0; pointer-events: none; }
+
+.demo-grid-axis-tick {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    color: var(--s3-grid-fg);
+    font-family: "Segoe UI", system-ui, sans-serif;
+    font-size: 10px;
+    white-space: nowrap;
+    text-shadow: 0 0 3px #000000, 0 0 3px #000000;
+}
+
+.demo-grid-well-labels { position: absolute; inset: 0; pointer-events: none; }
+
+/* White, matching the real product's wellhead name labels — deliberately plain, no background box
+   (unlike the cell tooltip), text-shadow only, same anti-legibility-loss trick the axis ticks use
+   against a black canvas that can be any colour underneath. Positioned to the RIGHT of the anchor
+   point (matching S3analyse's own placement, not centred over the marker) and vertically centred
+   on it — translateX is a fixed offset, not a percentage, so it stays a constant screen-space gap
+   from the marker regardless of the label's own text length. */
+.demo-grid-well-label {
+    position: absolute;
+    transform: translate(6px, -50%);
+    color: #ffffff;
+    font-family: "Segoe UI", system-ui, sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    white-space: nowrap;
+    text-shadow: 0 0 3px #000000, 0 0 3px #000000;
+}
+
+.demo-grid-caption {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 14px;
+    text-align: center;
+    color: var(--s3-grid-fg);
+    font-family: "Segoe UI", system-ui, sans-serif;
+    font-size: 13px;
+    pointer-events: none;
+}
+
+/* Plain read-out box, styled deliberately unlike the dark legend/axis chrome — matches the real
+   product's own cell-info tooltip (light background, dark text, index tuple then PROPERTY: value). */
+.demo-grid-cell-tooltip {
+    display: none;
+    position: absolute;
+    background: #fffde7;
+    border: 1px solid #8a8a8a;
+    color: #1a1a1a;
+    padding: 6px 10px;
+    font-family: "Segoe UI", system-ui, sans-serif;
+    font-size: 12px;
+    line-height: 1.5;
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.demo-grid-cell-tooltip div:last-child { font-weight: 600; }
+
+/* Single-page variant of .s3-dialog-body: the grid demo has only one settings page (Cell Lines)
+   built so far, so there is no tree to show beside it — see grid-viewer.js's own comment on why
+   faking a fourteen-item, mostly-dead tree would misrepresent the product more than omitting it. */
+.s3-dialog-body-solo { padding: 0 10px 8px; }
