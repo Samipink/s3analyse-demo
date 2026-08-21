@@ -607,6 +607,7 @@ export function render(root, state) {
     svg.appendChild(defs);
 
     const layer = el('g', { 'clip-path': `url(#${clip})` });
+    const hits = [];
 
     for (const curve of visible) {
         const colour = resolveColour(curve.colourIndex) || seriesToken(0);
@@ -622,7 +623,9 @@ export function render(root, state) {
                 points.push(null);
                 continue;
             }
-            points.push([px(t), py(v)]);
+            const px_ = px(t), py_ = py(v);
+            points.push([px_, py_]);
+            hits.push({ x: px_, y: py_, time: t, value: v, curve, colour });
         }
 
         if (curve.plotType !== 'Scatter') {
@@ -662,5 +665,107 @@ export function render(root, state) {
     svg.appendChild(layer);
     root.appendChild(svg);
 
-    return { svg, plot, xAxis: x, yAxis: y, px, py };
+    return { svg, plot, xAxis: x, yAxis: y, px, py, hits };
+}
+
+/* --------------------------------------------------------------------- tooltip ----------------- */
+
+// The product's own hover tooltip: a bordered box naming the vector, then Date/Time/Value rows
+// (a plain property/value box for a non-time X axis, e.g. a scatter plot — out of scope here,
+// this demo family is time-series only), a small marker on the hovered point and a thin leader
+// line to the box. Re-attached fresh on every render() call, since the SVG itself is rebuilt from
+// scratch each time — nothing here needs to survive across renders.
+export function attachTooltip(handle, state) {
+    if (!state.showTooltip || handle.hits.length === 0) return;
+
+    const svg = handle.svg;
+    const tip = el('g', { display: 'none' });
+    svg.appendChild(tip);
+
+    const HIT_RADIUS = 16;
+
+    function nearest(mx, my) {
+        let best = null, bestDist = Infinity;
+        for (const hit of handle.hits) {
+            const dx = hit.x - mx, dy = hit.y - my;
+            const dist = dx * dx + dy * dy;
+            if (dist < bestDist) { bestDist = dist; best = hit; }
+        }
+        return bestDist <= HIT_RADIUS * HIT_RADIUS ? best : null;
+    }
+
+    function toSvgPoint(event) {
+        const rect = svg.getBoundingClientRect();
+        const vb = svg.viewBox.baseVal;
+        return {
+            x: (event.clientX - rect.left) * (vb.width / rect.width),
+            y: (event.clientY - rect.top) * (vb.height / rect.height)
+        };
+    }
+
+    function showAt(hit) {
+        tip.textContent = '';
+        tip.setAttribute('display', 'inline');
+
+        tip.appendChild(el('circle', {
+            cx: hit.x, cy: hit.y, r: 3.5, fill: hit.colour, stroke: '#ffffff', 'stroke-width': 1
+        }));
+
+        const days = (hit.time - state.dataMin) / 86400000;
+        const d = new Date(hit.time);
+        const dateLabel = `${String(d.getUTCDate()).padStart(2, '0')}/`
+            + `${String(d.getUTCMonth() + 1).padStart(2, '0')}/${d.getUTCFullYear()}`;
+        const valueLabel = Number.isFinite(hit.value)
+            ? hit.value.toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+            : '';
+        const timeLabel = days.toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+        const rows = [['Date', dateLabel], ['Time', timeLabel], [hit.curve.label, valueLabel]];
+        const rowHeight = 15;
+        const padX = 8, padTop = 20, labelColWidth = 44;
+        const textWidth = Math.max(...rows.map(([l, v]) => l.length * 6.2 + v.length * 6.2)) + labelColWidth;
+        const boxWidth = Math.max(120, padX * 2 + textWidth);
+        const boxHeight = padTop + rows.length * rowHeight + 6;
+
+        // Flip to the left of the point once there is no room to the right, same idea as the
+        // product keeping the box on-screen near a point close to the plot's right edge.
+        const preferLeft = hit.x + 14 + boxWidth > handle.plot.right;
+        const boxX = preferLeft ? hit.x - 14 - boxWidth : hit.x + 14;
+        const boxY = Math.max(handle.plot.top, Math.min(hit.y - boxHeight / 2, handle.plot.bottom - boxHeight));
+
+        tip.appendChild(el('line', {
+            x1: hit.x, y1: hit.y, x2: preferLeft ? boxX + boxWidth : boxX, y2: boxY + 10,
+            stroke: '#9a9a9a', 'stroke-width': 1
+        }));
+        tip.appendChild(el('rect', {
+            x: boxX, y: boxY, width: boxWidth, height: boxHeight, rx: 2,
+            fill: 'var(--s3-plot-bg, #ffffff)', stroke: 'var(--s3-window-border, #9a9a9a)'
+        }));
+        tip.appendChild(el('text', {
+            x: boxX + padX, y: boxY + 14, 'font-size': 11.5, 'font-weight': 700,
+            fill: 'var(--s3-legend-fg, #201f1e)'
+        }, hit.curve.label));
+
+        rows.forEach(([label, value], i) => {
+            const rowY = boxY + padTop + i * rowHeight + 10;
+            tip.appendChild(el('text', {
+                x: boxX + padX, y: rowY, 'font-size': 11, fill: 'var(--s3-tick-fg, #808080)'
+            }, label));
+            tip.appendChild(el('text', {
+                x: boxX + boxWidth - padX, y: rowY, 'text-anchor': 'end',
+                'font-size': 11, fill: 'var(--s3-legend-fg, #201f1e)'
+            }, value));
+        });
+    }
+
+    svg.addEventListener('mousemove', event => {
+        const p = toSvgPoint(event);
+        if (p.x < handle.plot.left || p.x > handle.plot.right || p.y < handle.plot.top || p.y > handle.plot.bottom) {
+            tip.setAttribute('display', 'none');
+            return;
+        }
+        const hit = nearest(p.x, p.y);
+        if (hit) showAt(hit); else tip.setAttribute('display', 'none');
+    });
+    svg.addEventListener('mouseleave', () => tip.setAttribute('display', 'none'));
 }

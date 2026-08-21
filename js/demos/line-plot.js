@@ -833,7 +833,9 @@ export async function mount(figure, config) {
             backgroundColour: null, borderColour: null
         },
         title: '',
-        tabLabel: ''
+        tabLabel: '',
+        // Demo-only convenience, not a real product setting — see the checkbox below the chart.
+        showTooltip: true
     };
     state.selectedCurve = (state.curves.find(c => c.visible) || state.curves[0]).key;
 
@@ -882,6 +884,22 @@ export async function mount(figure, config) {
         + 'Try it — click any setting below to update the chart above.';
     wrap.appendChild(liveHint);
 
+    // Demo-only chrome, same reasoning as the restore bar below: the real product's chart always
+    // shows this tooltip on hover with no visible toggle, so a checkbox here would misrepresent
+    // the product if placed inside the emulated dialog. Kept outside it, plainly styled as site
+    // furniture, purely so a visitor comparing screenshots can turn the hover behaviour off.
+    const tooltipToggle = element('label', 'demo-tooltip-toggle');
+    const tooltipCheckbox = document.createElement('input');
+    tooltipCheckbox.type = 'checkbox';
+    tooltipCheckbox.checked = state.showTooltip;
+    tooltipToggle.appendChild(tooltipCheckbox);
+    tooltipToggle.appendChild(document.createTextNode(' Show tooltip on hover'));
+    tooltipCheckbox.addEventListener('change', () => {
+        state.showTooltip = tooltipCheckbox.checked;
+        draw();
+    });
+    wrap.appendChild(tooltipToggle);
+
     wrap.appendChild(dialog);
 
     // Not part of the emulated window: curves normally arrive from the project tree or Miller
@@ -927,7 +945,8 @@ export async function mount(figure, config) {
         recompute(state);
         state.description = `${state.title}. `
             + `${state.curves.filter(c => c.visible).length} series plotted.`;
-        chart.render(plotHost, state);
+        const handle = chart.render(plotHost, state);
+        if (handle) chart.attachTooltip(handle, state);
     };
 
     const refresh = (structural) => {

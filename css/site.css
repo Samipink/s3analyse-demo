@@ -1205,6 +1205,19 @@ figure.demo > figcaption {
     cursor: pointer;
 }
 
+/* Same recipe as .demo-restore-checkbox — a separate, honestly-named rule since this toggle has
+   nothing to do with restoring a removed series. */
+.demo-tooltip-toggle {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 10px;
+    font-size: 0.82rem;
+    color: var(--text-2);
+    white-space: nowrap;
+    cursor: pointer;
+}
+
 /* The "this is interactive" signal, deliberately OUTSIDE the emulated viewport/dialog (see the
    comment where this is built in each demo's mount()) and first in the page, ahead of the
    viewport itself — .demo-live-hint below repeats the message in more detail, but sits after the
