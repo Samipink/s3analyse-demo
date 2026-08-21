@@ -758,7 +758,7 @@ export function attachTooltip(handle, state) {
         });
     }
 
-    svg.addEventListener('mousemove', event => {
+    function handlePoint(event) {
         const p = toSvgPoint(event);
         if (p.x < handle.plot.left || p.x > handle.plot.right || p.y < handle.plot.top || p.y > handle.plot.bottom) {
             tip.setAttribute('display', 'none');
@@ -766,6 +766,13 @@ export function attachTooltip(handle, state) {
         }
         const hit = nearest(p.x, p.y);
         if (hit) showAt(hit); else tip.setAttribute('display', 'none');
-    });
-    svg.addEventListener('mouseleave', () => tip.setAttribute('display', 'none'));
+    }
+
+    // Pointer Events, not mouse events: a touch device never fires mousemove/mouseleave at all,
+    // so a phone or tablet visitor would see no tooltip whatsoever with only those. Pointer
+    // Events unify mouse hover, touch drag and pen into one API - pointerdown covers a plain tap
+    // that never moves, which mousemove-only handling would also miss even if it fired.
+    svg.addEventListener('pointerdown', handlePoint);
+    svg.addEventListener('pointermove', handlePoint);
+    svg.addEventListener('pointerleave', () => tip.setAttribute('display', 'none'));
 }
