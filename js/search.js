@@ -239,7 +239,10 @@ function renderResults(container, query, results) {
         const li = element('li', 'result');
 
         const link = element('a', 'result-title', result.title);
-        link.href = `/docs/${result.slug}`;
+        // Relative, not root-absolute - see the matching note in demos/model.js (docs/ADR-003).
+        // Setting .href to a root-absolute string ignores <base> exactly like an HTML
+        // attribute would, breaking search results under a subpath deployment.
+        link.href = `docs/${result.slug}`;
         li.appendChild(link);
 
         if (result.section) li.appendChild(element('span', 'result-section', result.section));
