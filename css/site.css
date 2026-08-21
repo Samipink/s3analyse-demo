@@ -705,6 +705,12 @@ figure.demo {
        page to compensate, which reads as the page jumping on every click. Opting out here is
        the documented fix — there is no scroll/focus call in this file causing it. */
     overflow-anchor: none;
+    /* The two-column tree+panel layout below needs to respond to the dialog's OWN rendered
+       width, not the page viewport — a sidebar or table-of-contents can squeeze this dialog
+       down well below 620px while the viewport itself is still much wider than that, which a
+       @media query keyed to viewport width can never see. See the @container rule below. */
+    container-type: inline-size;
+    container-name: s3dialog;
 }
 
 .s3-dialog-title {
@@ -1158,7 +1164,11 @@ figure.demo > figcaption {
     color: var(--text-3);
 }
 
-@media (max-width: 620px) {
+/* 610, not 620: .s3-dialog's own max-width is 620px, and at that natural full size a row's
+   content fits with only ~13px to spare (measured directly: the longest row, "Position Relative
+   to Axes:", needs the full width) — so the trigger has to sit just under the dialog's own
+   maximum, or it would never fire in the normal, fully-open desktop case. */
+@container s3dialog (max-width: 610px) {
     .s3-dialog-body {
         grid-template-columns: minmax(0, 1fr);
     }
