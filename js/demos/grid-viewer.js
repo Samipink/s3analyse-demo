@@ -848,8 +848,9 @@ export async function mount(figure, config) {
     let meshGroup = null;
 
     const controls = new OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true;
-    controls.dampingFactor = 0.08;
+    // No inertia/momentum: the grid should stop the instant the mouse button releases or stops
+    // moving, not keep drifting like a trackball. OrbitControls' damping is what causes that.
+    controls.enableDamping = false;
     controls.enablePan = false; // deliberately no fly-through — orbit and zoom only
     controls.rotateSpeed = 0.6;
     controls.zoomSpeed = 0.8;
