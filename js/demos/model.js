@@ -1,3 +1,5 @@
+// © 2026 Samantha Mulholland. All rights reserved.
+//
 // The shared synthetic Eclipse model behind every interactive demo on this site.
 //
 // This is the ONLY module a demo may import for data. Everything else here is internal, so that

@@ -1,3 +1,5 @@
+// © 2026 Samantha Mulholland. All rights reserved.
+//
 // The line plot demo: the model, a reproduction of the S3analyse chart, and a reproduction of the
 // product's "Line Chart Settings" window driving it.
 //

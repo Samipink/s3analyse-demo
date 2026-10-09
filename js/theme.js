@@ -1,3 +1,5 @@
+// © 2026 Samantha Mulholland. All rights reserved.
+//
 // Light/dark theme toggle.
 //
 // Deliberately tiny and framework-free: the site uses static server rendering, so there is

@@ -1,3 +1,5 @@
+// © 2026 Samantha Mulholland. All rights reserved.
+//
 // The 3D grid viewer demo: the synthetic grid, coloured by a selected property, reproduced as an
 // S3analyse-style 3D view — not the ribbon or project tree around it, per Samantha's direction
 // after reviewing the first draft. The fidelity target is the VIEWPORT itself (surface, legend,

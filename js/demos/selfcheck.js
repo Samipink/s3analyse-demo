@@ -1,3 +1,5 @@
+// © 2026 Samantha Mulholland. All rights reserved.
+//
 // Development-only assertions over the shared synthetic model.
 //
 // Not a test framework and not shipped behaviour: this exists because the model's invariants are

@@ -1,3 +1,5 @@
+// © 2026 Samantha Mulholland. All rights reserved.
+//
 // Entry point for the interactive demos.
 //
 // The site uses static server rendering, so there is no Blazor circuit and no @onclick — but

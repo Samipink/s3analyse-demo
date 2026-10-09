@@ -1,3 +1,5 @@
+// © 2026 Samantha Mulholland. All rights reserved.
+//
 // A reproduction of the S3analyse line chart, drawn as SVG.
 //
 // The goal is fidelity, not a nice-looking web chart: the site exists to promote S3analyse, so a
