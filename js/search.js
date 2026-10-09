@@ -1,4 +1,4 @@
-// © 2026 Samantha Mulholland. All rights reserved.
+// © 2026 Samipink (https://samipink.github.io). All rights reserved.
 //
 // Client-side search — a line-for-line port of Services/SearchService.cs, kept as one file so the
 // two are easy to diff against each other by eye. Moved client-side ahead of the eventual Azure

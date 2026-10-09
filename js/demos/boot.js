@@ -1,4 +1,4 @@
-// © 2026 Samantha Mulholland. All rights reserved.
+// © 2026 Samipink (https://samipink.github.io). All rights reserved.
 //
 // Entry point for the interactive demos.
 //

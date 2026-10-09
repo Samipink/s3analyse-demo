@@ -1,4 +1,4 @@
-// © 2026 Samantha Mulholland. All rights reserved.
+// © 2026 Samipink (https://samipink.github.io). All rights reserved.
 //
 // A reproduction of the S3analyse line chart, drawn as SVG.
 //
